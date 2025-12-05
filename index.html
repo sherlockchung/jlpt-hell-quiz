@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>An-Yu's JLPT 地獄特訓 (全讀音版)</title>
+    <style>
+        :root {
+            --primary: #b91c1c; /* Red 700 - 更有壓迫感的紅 */
+            --primary-hover: #991b1b;
+            --success: #15803d;
+            --error: #dc2626;
+            --bg: #1c1917; /* Dark background */
+            --card: #292524;
+            --text-main: #e7e5e4;
+            --text-sub: #a8a29e;
+        }
+
+        body {
+            font-family: 'Hiragino Sans', 'Meiryo', 'Microsoft JhengHei', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 15px;
+        }
+
+        .container {
+            background-color: var(--card);
+            width: 100%;
+            max-width: 700px;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            padding: 35px;
+            position: relative;
+            border: 1px solid #44403c;
+        }
+
+        h1 {
+            color: #f87171;
+            font-size: 2rem;
+            margin: 0 0 10px 0;
+            text-align: center;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* 狀態條 */
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            margin-bottom: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 6px;
+            background: #44403c;
+            border-radius: 99px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #ef4444;
+            width: 0%;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px #ef4444;
+        }
+
+        /* 題目卡片 */
+        .quiz-card {
+            background: #0c0a09;
+            border: 1px solid #44403c;
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .tag {
+            background: #7f1d1d;
+            color: #fecaca;
+            padding: 6px 16px;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+            border: 1px solid #991b1b;
+        }
+
+        .word-text {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #fafaf9;
+            margin: 15px 0;
+            letter-spacing: 4px;
+        }
+
+        /* 選項按鈕 */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 500px) {
+            .options-grid { grid-template-columns: 1fr; }
+            .word-text { font-size: 2.5rem; }
+            .container { padding: 20px; }
+        }
+
+        button.opt-btn {
+            background: #292524;
+            border: 1px solid #57534e;
+            color: #d6d3d1;
+            padding: 20px;
+            border-radius: 14px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.1s;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 70px;
+            position: relative;
+        }
+
+        button.opt-btn:hover:not(:disabled) {
+            border-color: #f87171;
+            background: #450a0a;
+            color: white;
+            transform: scale(1.02);
+        }
+
+        button.opt-btn.correct {
+            background: #064e3b;
+            color: #4ade80;
+            border-color: #22c55e;
+            box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
+        }
+
+        button.opt-btn.wrong {
+            background: #450a0a;
+            color: #f87171;
+            border-color: #ef4444;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .feedback-area {
+            min-height: 30px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: #f87171;
+        }
+
+        .btn-primary {
+            background: #b91c1c;
+            color: white;
+            border: none;
+            padding: 16px 45px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(185, 28, 28, 0.4);
+        }
+        .btn-primary:hover { 
+            background: #991b1b;
+            transform: translateY(-2px);
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="start-screen">
+        <h1>JLPT 地獄特訓</h1>
+        <div class="subtitle">
+            模式：全漢字 ➔ 選拼音<br>
+            難度：<span style="color:#ef4444; font-weight:bold;">INSANE (懷疑人生版)</span>
+        </div>
+        <div style="margin: 30px 0; color: #a8a29e; font-size: 0.95rem; background: #0c0a09; padding: 25px; border-radius: 16px; text-align: left; border: 1px solid #44403c;">
+            <strong style="color: #f87171;">⚠️ 警告：</strong>
+            <ul style="margin: 10px 0 0 20px; padding: 0; line-height: 1.8;">
+                <li>選項包含：極度相似的長短音、清濁音、促音陷阱。</li>
+                <li>這不是普通的測驗，這是對你日文底子的極限挑戰。</li>
+                <li>錯題會無情地重新排入隊列，直到你選對為止。</li>
+            </ul>
+        </div>
+        <button class="btn-primary" onclick="startQuiz()">接受挑戰</button>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+        <div class="stats-row">
+            <span id="progress-text">Progress: 0 / 20</span>
+            <span id="queue-text">Queue: 20</span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+
+        <div class="quiz-card">
+            <div class="tag">READING</div>
+            <div class="word-text" id="q-word"></div>
+        </div>
+
+        <div class="options-grid" id="options-container"></div>
+        <div class="feedback-area" id="feedback-msg"></div>
+    </div>
+
+    <div id="result-screen" class="hidden" style="text-align: center;">
+        <div style="font-size: 5rem; margin-bottom: 20px;">💀</div>
+        <h1 style="color: #f87171;">生還確認</h1>
+        <p style="font-size: 1.1rem; color: #a8a29e; margin-bottom: 30px;">
+            恭喜你，你的日文底子比想像中更堅強。
+        </p>
+        <div id="result-stats" style="margin-bottom: 30px; font-weight: bold; color: #e7e5e4; font-size: 1.2rem;"></div>
+        <button class="btn-primary" onclick="location.reload()">再來一次地獄</button>
+    </div>
+</div>
+
+<script>
+    // ==========================================
+    // 資料庫
+    // ==========================================
+    const rawData = [
+        // 手動標註的超強陷阱 (Traps) - 優先使用
+        {kanji: "発つ", kana: "たつ", meaning: "出發", traps: ["はつ", "ほつ", "はっつ"]},
+        {kanji: "着く", kana: "つく", meaning: "抵達", traps: ["ちゃく", "きく", "じゅく"]},
+        {kanji: "通う", kana: "かよう", meaning: "往來/通勤", traps: ["とおる", "つうよう"]}, 
+        {kanji: "通る", kana: "とおる", meaning: "通過", traps: ["かよう", "つうる"]},
+        {kanji: "座席", kana: "ざせき", meaning: "座位", traps: ["すわって", "ざしょく", "させき"]},
+        {kanji: "往復", kana: "おうふく", meaning: "往返", traps: ["ゆきかえり", "ごうふく", "おおふく"]},
+        {kanji: "片道", kana: "かたみち", meaning: "單程", traps: ["へんどう", "かたじ", "かたど"]},
+        {kanji: "宿泊", kana: "しゅくはく", meaning: "住宿", traps: ["とまり", "しゅくぱく", "じゅくはく"]},
+        {kanji: "滞在", kana: "たいざい", meaning: "停留", traps: ["ていたい", "たいい", "だいざい"]},
+        {kanji: "混雑", kana: "こんざつ", meaning: "擁擠", traps: ["こんさつ", "こんぞう", "こんぜつ"]},
+        {kanji: "経由", kana: "けいゆ", meaning: "經由", traps: ["きょうゆ", "へゆ", "けいゆう"]}, 
+        {kanji: "乗車", kana: "じょうしゃ", meaning: "乘車", traps: ["のりぐるま", "じょうくるま", "じょうさ"]},
+        {kanji: "下車", kana: "げしゃ", meaning: "下車", traps: ["かしゃ", "したぐるま", "げさ"]},
+        {kanji: "乗客", kana: "じょうきゃく", meaning: "乘客", traps: ["のりきゃく", "じょうかく", "じょうがき"]},
+        {kanji: "作成", kana: "さくせい", meaning: "製作", traps: ["さくなり", "さしょう", "さくしょう"]},
+        {kanji: "削除", kana: "さくじょ", meaning: "刪除", traps: ["けしじょ", "さくじゅ", "さくしょ"]},
+        {kanji: "入力", kana: "にゅうりょく", meaning: "輸入", traps: ["いれりょく", "じゅりょく"]}, 
+        {kanji: "中古", kana: "ちゅうこ", meaning: "二手", traps: ["なかふる", "ちゅうふる", "ちゅうご"]},
+        {kanji: "操作", kana: "そうさ", meaning: "操作", traps: ["みさお", "そうさく", "ぞうさ"]},
+        {kanji: "修理", kana: "しゅうり", meaning: "修理", traps: ["なおり", "おさまり", "しゅり"]},
+        {kanji: "生物学", kana: "せいぶつがく", meaning: "生物學", traps: ["なまものがく", "いきものがく", "せいぶつがっく"]},
+        {kanji: "物理", kana: "ぶつり", meaning: "物理", traps: ["ものり", "ぶつりゃく", "ぶとり"]},
+        {kanji: "化学", kana: "かがく", meaning: "化學", traps: ["ばけがく", "かみ", "かかり"]}, 
+        {kanji: "専攻", kana: "せんこう", meaning: "專攻", traps: ["もっぱら", "せんこ", "ぜんこう"]},
+        {kanji: "実験", kana: "じっけん", meaning: "實驗", traps: ["じつけん", "み験", "じっきん"]},
+        {kanji: "学会", kana: "がっかい", meaning: "學會", traps: ["まなぶかい", "がくかい"]},
+        {kanji: "就職", kana: "しゅうしょく", meaning: "就職", traps: ["つくしょく", "しゅうしき", "じゅうしょく"]},
+        {kanji: "月給", kana: "げっきゅう", meaning: "月薪", traps: ["がっきゅう", "つききゅう", "げつきゅう"]},
+        {kanji: "重役", kana: "じゅうやく", meaning: "重臣/董事", traps: ["おもやく", "ちょうやく", "じゅうえき"]},
+        {kanji: "労働", kana: "ろうどう", meaning: "勞動", traps: ["はたらき", "ろううご", "ろどう"]},
+        {kanji: "朝刊", kana: "ちょうかん", meaning: "早報", traps: ["あさかん", "ちょうけん"]},
+        {kanji: "夕刊", kana: "ゆうかん", meaning: "晚報", traps: ["せきかん", "ゆうけん"]},
+        {kanji: "番組", kana: "ばんぐみ", meaning: "節目", traps: ["ばんくみ", "ばんそ"]},
+        {kanji: "最中", kana: "さいちゅう", meaning: "正在...中", traps: ["もなか", "さいなか"]}, 
+        {kanji: "風邪", kana: "かぜ", meaning: "感冒", traps: ["ふうじゃ", "かざ"]}, 
+        {kanji: "答案", kana: "とうあん", meaning: "答案卷", traps: ["こたえあん", "どうあん", "とうわん"]},
+        {kanji: "予防", kana: "よぼう", meaning: "預防", traps: ["よほう", "よもう"]},
+        {kanji: "毛糸", kana: "けいと", meaning: "毛線"},
+        {kanji: "編む", kana: "あむ", meaning: "編織"},
+        {kanji: "散らかる", kana: "ちらかる", meaning: "散亂"},
+        {kanji: "退ける", kana: "どける", meaning: "移開"},
+        {kanji: "埃", kana: "ほこり", meaning: "灰塵"},
+        {kanji: "箒", kana: "ほうき", meaning: "掃把"},
+        {kanji: "塵取り", kana: "ちりとり", meaning: "畚箕"},
+        {kanji: "干す", kana: "ほす", meaning: "曬"},
+        {kanji: "乾かす", kana: "かわかす", meaning: "弄乾"},
+        {kanji: "吊るす", kana: "つるす", meaning: "吊掛"},
+        {kanji: "茹でる", kana: "ゆでる", meaning: "燙/煮"},
+        {kanji: "炒める", kana: "いためる", meaning: "炒"},
+        {kanji: "炊く", kana: "たく", meaning: "煮(飯)"},
+        {kanji: "煮る", kana: "にる", meaning: "煮"},
+        {kanji: "出来上がる", kana: "できあがる", meaning: "完成"},
+        {kanji: "裏返す", kana: "うらがえす", meaning: "翻面"},
+        {kanji: "畳む", kana: "たたむ", meaning: "摺疊"},
+        {kanji: "炊事", kana: "すいじ", meaning: "烹飪事務"},
+        {kanji: "献立", kana: "こんだて", meaning: "菜單"},
+        {kanji: "吐く", kana: "はく", meaning: "嘔吐"},
+        {kanji: "齧る", kana: "かじる", meaning: "咬/啃"},
+        {kanji: "酔う", kana: "よう", meaning: "喝醉"},
+        {kanji: "目眩", kana: "めまい", meaning: "暈眩"},
+        {kanji: "奢る", kana: "おごる", meaning: "請客"},
+        {kanji: "敬意", kana: "けいい", meaning: "敬意"},
+        {kanji: "足首", kana: "あしくび", meaning: "腳踝"},
+        {kanji: "捻る", kana: "ひねる", meaning: "扭轉"},
+        {kanji: "血液", kana: "けつえき", meaning: "血液"},
+        {kanji: "汚染", kana: "おせん", meaning: "汙染"},
+        {kanji: "内科", kana: "ないか", meaning: "內科"},
+        {kanji: "外科", kana: "げか", meaning: "外科"},
+        {kanji: "骨折", kana: "こっせつ", meaning: "骨折"},
+        {kanji: "白髪", kana: "しらが", meaning: "白頭髮"},
+        {kanji: "包帯", kana: "ほうたい", meaning: "繃帶"},
+        {kanji: "薬局", kana: "やっきょく", meaning: "藥局"},
+        {kanji: "診察", kana: "しんさつ", meaning: "診察"},
+        {kanji: "診断", kana: "しんだん", meaning: "診斷"},
+        {kanji: "睡眠", kana: "すいみん", meaning: "睡眠"},
+        {kanji: "寿命", kana: "じゅみょう", meaning: "壽命"},
+        {kanji: "髭", kana: "ひげ", meaning: "鬍子"},
+        {kanji: "剃る", kana: "そる", meaning: "剃"},
+        {kanji: "櫛", kana: "くし", meaning: "梳子"},
+        {kanji: "梳かす", kana: "とかす", meaning: "梳理"},
+        {kanji: "相棒", kana: "あいぼう", meaning: "夥伴"},
+        {kanji: "派手", kana: "はで", meaning: "花俏"},
+        {kanji: "地味", kana: "じみ", meaning: "樸素"},
+        {kanji: "卑怯", kana: "ひきょう", meaning: "卑鄙"},
+        {kanji: "威張る", kana: "いばる", meaning: "傲慢"},
+        {kanji: "我儘", kana: "わがまま", meaning: "任性"},
+        {kanji: "慎重", kana: "しんちょう", meaning: "慎重"},
+        {kanji: "要領", kana: "ようりょう", meaning: "要領"},
+        {kanji: "謙虚", kana: "けんきょ", meaning: "謙虛"},
+        {kanji: "生意気", kana: "なまいき", meaning: "自大"},
+        {kanji: "厚かましい", kana: "あつかましい", meaning: "厚臉皮"},
+        {kanji: "平気", kana: "へいき", meaning: "不在乎"},
+        {kanji: "裏切る", kana: "うらぎる", meaning: "背叛"},
+        {kanji: "慌てる", kana: "あわてる", meaning: "慌張"},
+        {kanji: "清潔", kana: "せいけつ", meaning: "清潔"},
+        {kanji: "見掛け", kana: "みかけ", meaning: "外表"},
+        {kanji: "誤解", kana: "ごかい", meaning: "誤會"},
+        {kanji: "道徳", kana: "どうとく", meaning: "道德"},
+        {kanji: "余計", kana: "よけい", meaning: "多餘"},
+        {kanji: "大した", kana: "たいした", meaning: "了不起的"},
+        {kanji: "破片", kana: "はへん", meaning: "碎片"},
+        {kanji: "切っ掛け", kana: "きっかけ", meaning: "契機"},
+        {kanji: "契機", kana: "けいき", meaning: "契機"},
+        {kanji: "常に", kana: "つねに", meaning: "總是"},
+        {kanji: "比較", kana: "ひかく", meaning: "比較"},
+        {kanji: "序に", kana: "ついでに", meaning: "順便"},
+        {kanji: "次第に", kana: "しだいに", meaning: "逐漸"},
+        {kanji: "必死に", kana: "ひっしに", meaning: "拼命地"},
+        {kanji: "案外", kana: "あんがい", meaning: "意外地"},
+        {kanji: "自ら", kana: "みずから", meaning: "親自"},
+        {kanji: "一瞬", kana: "いっしゅん", meaning: "一瞬間"},
+        {kanji: "若干", kana: "じゃっかん", meaning: "若干"},
+        {kanji: "欠品", kana: "けっぴん", meaning: "缺貨"},
+        {kanji: "早速", kana: "さっそく", meaning: "立刻"},
+        {kanji: "余程", kana: "よほど", meaning: "相當"},
+        {kanji: "万が一", kana: "まんがいち", meaning: "萬一"},
+        {kanji: "当分", kana: "とうぶん", meaning: "暫時"},
+        {kanji: "見込み", kana: "みこみ", meaning: "預估"},
+        {kanji: "実に", kana: "じつに", meaning: "實在是"},
+        {kanji: "一応", kana: "いちおう", meaning: "姑且"},
+        {kanji: "団体", kana: "だんたい", meaning: "團體"},
+        {kanji: "個人", kana: "こじん", meaning: "個人"},
+        {kanji: "日帰り", kana: "ひがえり", meaning: "當日來回"},
+        {kanji: "二泊三日", kana: "にはくみっか", meaning: "三天兩夜"},
+        {kanji: "別荘", kana: "べっそう", meaning: "別墅"},
+        {kanji: "見送る", kana: "みおくる", meaning: "送行"},
+        {kanji: "出迎える", kana: "でむかえる", meaning: "迎接"},
+        {kanji: "送迎", kana: "そうげい", meaning: "接送"},
+        {kanji: "名所", kana: "めいしょ", meaning: "名勝"},
+        {kanji: "停留所", kana: "ていりゅうじょ", meaning: "公車站"},
+        {kanji: "売店", kana: "ばいてん", meaning: "販賣部"},
+        {kanji: "横断", kana: "おうだん", meaning: "橫越"},
+        {kanji: "縦断", kana: "じゅうだん", meaning: "縱貫"},
+        {kanji: "到着", kana: "とうちゃく", meaning: "抵達"},
+        {kanji: "飛行機", kana: "ひこうき", meaning: "飛機"},
+        {kanji: "行方", kana: "ゆくえ", meaning: "行蹤"},
+        {kanji: "回数券", kana: "かいすうけん", meaning: "回數票"},
+        {kanji: "定員", kana: "ていいん", meaning: "定員"},
+        {kanji: "列島", kana: "れっとう", meaning: "列島"},
+        {kanji: "半島", kana: "はんとう", meaning: "半島"},
+        {kanji: "盆地", kana: "ぼんち", meaning: "盆地"},
+        {kanji: "平野", kana: "へいや", meaning: "平原"},
+        {kanji: "砂漠", kana: "さばく", meaning: "沙漠"},
+        {kanji: "風景", kana: "ふうけい", meaning: "風景"},
+        {kanji: "地平線", kana: "ちへいせん", meaning: "地平線"},
+        {kanji: "新学期", kana: "しんがっき", meaning: "新學期"},
+        {kanji: "上旬", kana: "じょうじゅん", meaning: "上旬"},
+        {kanji: "中旬", kana: "ちゅうじゅん", meaning: "中旬"},
+        {kanji: "下旬", kana: "げじゅん", meaning: "下旬"},
+        {kanji: "湿度", kana: "しつど", meaning: "濕度"},
+        {kanji: "果実", kana: "かじつ", meaning: "果實"},
+        {kanji: "稲", kana: "いね", meaning: "稻子"},
+        {kanji: "好天", kana: "こうてん", meaning: "好天氣"},
+        {kanji: "吹雪", kana: "ふぶき", meaning: "暴風雪"},
+        {kanji: "幼児", kana: "ようじ", meaning: "幼兒"},
+        {kanji: "進学", kana: "しんがく", meaning: "升學"},
+        {kanji: "転校", kana: "てんこう", meaning: "轉學"},
+        {kanji: "在学中", kana: "ざいがくちゅう", meaning: "在學中"},
+        {kanji: "演習", kana: "えんしゅう", meaning: "演習"},
+        {kanji: "単位", kana: "たんい", meaning: "學分"},
+        {kanji: "休講", kana: "きゅうこう", meaning: "停課"},
+        {kanji: "自習", kana: "じしゅう", meaning: "自習"},
+        {kanji: "学期", kana: "がっき", meaning: "學期"},
+        {kanji: "時間割", kana: "じかんわり", meaning: "課表"},
+        {kanji: "講義", kana: "こうぎ", meaning: "講義"},
+        {kanji: "実習", kana: "じっしゅう", meaning: "實習"},
+        {kanji: "採点", kana: "さいてん", meaning: "評分"},
+        {kanji: "期末", kana: "きまつ", meaning: "期末"},
+        {kanji: "筆記", kana: "ひっき", meaning: "筆試"},
+        {kanji: "教科書", kana: "きょうかしょ", meaning: "教科書"},
+        {kanji: "成績", kana: "せいせき", meaning: "成績"},
+        {kanji: "評価", kana: "ひょうか", meaning: "評價"},
+        {kanji: "学問", kana: "がくもん", meaning: "學問"},
+        {kanji: "経済学", kana: "けいざいがく", meaning: "經濟學"},
+        {kanji: "人文", kana: "じんぶん", meaning: "人文"},
+        {kanji: "哲学", kana: "てつがく", meaning: "哲學"},
+        {kanji: "研究", kana: "けんきゅう", meaning: "研究"},
+        {kanji: "妥当", kana: "だとう", meaning: "妥當"},
+        {kanji: "証明", kana: "しょうめい", meaning: "證明"},
+        {kanji: "研修", kana: "けんしゅう", meaning: "進修"},
+        {kanji: "一流", kana: "いちりゅう", meaning: "一流"},
+        {kanji: "熱中", kana: "ねっちゅう", meaning: "熱衷"},
+        {kanji: "休暇", kana: "きゅうか", meaning: "休假"},
+        {kanji: "申請", kana: "しんせい", meaning: "申請"},
+        {kanji: "提案", kana: "ていあん", meaning: "提案"},
+        {kanji: "能率", kana: "のうりつ", meaning: "效率"},
+        {kanji: "失業", kana: "しつぎょう", meaning: "失業"},
+        {kanji: "稼働", kana: "かどう", meaning: "運轉"},
+        {kanji: "破産", kana: "はさん", meaning: "破產"},
+        {kanji: "経営", kana: "けいえい", meaning: "經營"},
+        {kanji: "資本金", kana: "しほんきん", meaning: "資本金"},
+        {kanji: "募集", kana: "ぼしゅう", meaning: "募集"},
+        {kanji: "指示", kana: "しじ", meaning: "指示"},
+        {kanji: "才能", kana: "さいのう", meaning: "才能"},
+        {kanji: "組合", kana: "くみあい", meaning: "工會"},
+        {kanji: "条件", kana: "じょうけん", meaning: "條件"},
+        {kanji: "改善", kana: "かいぜん", meaning: "改善"},
+        {kanji: "要求", kana: "ようきゅう", meaning: "要求"},
+        {kanji: "利害", kana: "りがい", meaning: "利害"},
+        {kanji: "利益", kana: "りえき", meaning: "利益"},
+        {kanji: "弁護士", kana: "べんごし", meaning: "律師"},
+        {kanji: "金融", kana: "きんゆう", meaning: "金融"},
+        {kanji: "専門職", kana: "せんもんしょく", meaning: "專職"},
+        {kanji: "報道", kana: "ほうどう", meaning: "報導"},
+        {kanji: "広告", kana: "こうこく", meaning: "廣告"},
+        {kanji: "取材", kana: "しゅざい", meaning: "採訪"},
+        {kanji: "入手", kana: "にゅうしゅ", meaning: "入手"},
+        {kanji: "発行", kana: "はっこう", meaning: "發行"},
+        {kanji: "世間", kana: "せけん", meaning: "世間"},
+        {kanji: "話題", kana: "わだい", meaning: "話題"},
+        {kanji: "注目", kana: "ちゅうもく", meaning: "注目"},
+        {kanji: "見出し", kana: "みだし", meaning: "標題"},
+        {kanji: "内容", kana: "ないよう", meaning: "內容"},
+        {kanji: "詳細", kana: "しょうさい", meaning: "詳細"},
+        {kanji: "正確", kana: "せいかくな", meaning: "正確"},
+        {kanji: "放送", kana: "ほうそう", meaning: "廣播"},
+        {kanji: "宣伝", kana: "せんでん", meaning: "宣傳"},
+        {kanji: "映像", kana: "えいぞう", meaning: "影像"},
+        {kanji: "音声", kana: "おんせい", meaning: "聲音"},
+        {kanji: "娯楽", kana: "ごらく", meaning: "娛樂"},
+        {kanji: "評判", kana: "ひょうばん", meaning: "評價"},
+        {kanji: "魅力", kana: "みりょく", meaning: "魅力"},
+        {kanji: "訪問", kana: "ほうもん", meaning: "訪問"},
+        {kanji: "受信", kana: "じゅしん", meaning: "接收"},
+        {kanji: "添付", kana: "てんぷ", meaning: "附加"},
+        {kanji: "種類", kana: "しゅるい", meaning: "種類"},
+        {kanji: "設定", kana: "せってい", meaning: "設定"},
+        {kanji: "挿入", kana: "そうにゅう", meaning: "插入"},
+        {kanji: "拡大", kana: "かくだい", meaning: "擴大"},
+        {kanji: "縮小", kana: "しゅくしょう", meaning: "縮小"},
+        {kanji: "保存", kana: "ほぞん", meaning: "保存"},
+        {kanji: "接続", kana: "せつぞく", meaning: "連接"},
+        {kanji: "検索", kana: "けんさく", meaning: "檢索"},
+        {kanji: "公式", kana: "こうしき", meaning: "公式"},
+        {kanji: "起動", kana: "きどう", meaning: "啟動"},
+        {kanji: "終了", kana: "しゅうりょう", meaning: "結束"},
+        {kanji: "共有", kana: "きょうゆう", meaning: "共享"}
+    ];
+
+    let quizQueue = [];
+    let wrongCount = 0;
+    const TARGET_QUESTIONS = 20;
+
+    // ============================================
+    // 魔鬼干擾項生成器 (Evil Distractor Generator)
+    // ============================================
+    function generateEvilDistractors(correctKana) {
+        let distractors = new Set();
+        let attempts = 0;
+
+        // 規則 1: 優先加入手動定義的 "Traps"
+        // (需在呼叫前處理，這裡處理純演算法部分)
+
+        while (distractors.size < 3 && attempts < 100) {
+            attempts++;
+            let fake = correctKana;
+            const strategy = Math.floor(Math.random() * 8); // 8種惡意策略
+
+            // 1. 清濁音反轉 (Classic JLPT Trap)
+            if (strategy === 0) {
+                fake = fake.replace(/[かきくけこ]/g, m => String.fromCharCode(m.charCodeAt(0) + 1)) // ka -> ga
+                           .replace(/[がぎぐげご]/g, m => String.fromCharCode(m.charCodeAt(0) - 1)) // ga -> ka
+                           .replace(/[たちつてと]/g, m => String.fromCharCode(m.charCodeAt(0) + 1)) // ta -> da
+                           .replace(/[だぢづでど]/g, m => String.fromCharCode(m.charCodeAt(0) - 1)) // da -> ta
+                           .replace(/[さしすせそ]/g, m => String.fromCharCode(m.charCodeAt(0) + 1)) // sa -> za
+                           .replace(/[ざじずぜぞ]/g, m => String.fromCharCode(m.charCodeAt(0) - 1)); // za -> sa
+            }
+            // 2. 長音地獄 (Chouon Hell)
+            else if (strategy === 1) {
+                if (fake.includes('う')) fake = fake.replace('う', ''); // 移除長音
+                else if (fake.match(/[おこぞとどのもろよ]/)) fake += 'う'; // 添加o段長音
+                else if (fake.match(/[えけせてねめれ]/)) fake += 'い'; // 添加e段長音
+                else if (fake.match(/[あかさたなはまやらわ]/)) fake += 'あ'; // 添加a段長音
+            }
+            // 3. 促音陷阱 (Sokuon Trap)
+            else if (strategy === 2) {
+                if (fake.includes('っ')) fake = fake.replace('っ', 'つ'); // 移除促音
+                else if (fake.includes('っ') === false && fake.length > 2) {
+                    // 隨機插入促音
+                    const pos = 1; 
+                    fake = fake.slice(0, pos) + 'っ' + fake.slice(pos);
+                }
+            }
+            // 4. 自動詞/他動詞混淆 (Transitivity)
+            else if (strategy === 3) {
+                if (fake.endsWith('かる')) fake = fake.replace('かる', 'ける');
+                else if (fake.endsWith('ける')) fake = fake.replace('ける', 'かる');
+                else if (fake.endsWith('ある')) fake = fake.replace('ある', 'える');
+                else if (fake.endsWith('える')) fake = fake.replace('える', 'ある');
+                else if (fake.endsWith('む')) fake = fake.replace('む', 'める');
+            }
+            // 5. 拗音消失/產生 (Youon)
+            else if (strategy === 4) {
+                 if (fake.includes('ゃ')) fake = fake.replace('ゃ', '');
+                 else if (fake.includes('ゅ')) fake = fake.replace('ゅ', '');
+                 else if (fake.includes('ょ')) fake = fake.replace('ょ', '');
+                 else if (fake.includes('き')) fake = fake.replace('き', 'きょ');
+                 else if (fake.includes('し')) fake = fake.replace('し', 'しゃ');
+                 else if (fake.includes('ち')) fake = fake.replace('ち', 'ちゃ');
+            }
+            // 6. 尾音變化 (Okurigana mistake simulation)
+            else if (strategy === 5) {
+                const endings = ['い', 'く', 'つ', 'る', 'む'];
+                fake = fake.slice(0, -1) + endings[Math.floor(Math.random() * endings.length)];
+            }
+            // 7. 音讀/訓讀混淆 (模擬)
+            else if (strategy === 6) {
+                // 簡單的替換規則，模擬常見錯誤
+                if (fake.startsWith('お')) fake = fake.replace('お', 'ご'); // O -> Go
+                else if (fake.startsWith('ご')) fake = fake.replace('ご', 'お'); // Go -> O
+                else if (fake.startsWith('き')) fake = fake.replace('き', 'け'); 
+            }
+            // 8. 隨機微調
+            else {
+                 if (fake.includes('い')) fake = fake.replace('い', 'え');
+                 else if (fake.includes('え')) fake = fake.replace('え', 'い');
+            }
+
+            // 檢查有效性
+            if (fake !== correctKana && fake.length >= 1 && fake !== 'undefined') {
+                distractors.add(fake);
+            }
+        }
+        return Array.from(distractors);
+    }
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // ============================================
+    // 測驗流程
+    // ============================================
+    function startQuiz() {
+        // 從資料庫隨機抓 20 題
+        const shuffledWords = shuffle([...rawData]).slice(0, TARGET_QUESTIONS);
+        
+        // 全部轉為 READING 題型
+        quizQueue = shuffledWords.map(word => {
+            // 準備干擾項
+            let options = [];
+            
+            // 1. 如果有手動 Traps，先加進來
+            if (word.traps && word.traps.length > 0) {
+                options = [...word.traps];
+            }
+            
+            // 2. 如果不夠 3 個，用演算法補
+            const generated = generateEvilDistractors(word.kana);
+            for (let g of generated) {
+                if (options.length >= 3) break;
+                if (!options.includes(g)) options.push(g);
+            }
+            
+            // 3. 還不夠？從資料庫隨機抓發音相近的
+            while (options.length < 3) {
+                const randomWord = rawData[Math.floor(Math.random() * rawData.length)];
+                if (randomWord.kana !== word.kana && !options.includes(randomWord.kana)) {
+                    options.push(randomWord.kana);
+                }
+            }
+            
+            // 加入正解並打亂
+            options.push(word.kana);
+            options = shuffle(options);
+
+            return {
+                text: word.kanji,
+                correct: word.kana,
+                options: options,
+                raw: word
+            };
+        });
+
+        wrongCount = 0;
+
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        renderQuestion();
+    }
+
+    function renderQuestion() {
+        if (quizQueue.length === 0) {
+            showResult();
+            return;
+        }
+
+        const q = quizQueue[0];
+        const remaining = quizQueue.length;
+        const progress = TARGET_QUESTIONS - remaining;
+        const percentage = Math.min((progress / TARGET_QUESTIONS) * 100, 100);
+
+        document.getElementById('progress-text').innerText = `已完成: ${progress} / ${TARGET_QUESTIONS}`;
+        document.getElementById('queue-text').innerText = `剩餘: ${remaining}`;
+        document.getElementById('progress-fill').style.width = `${percentage}%`;
+
+        document.getElementById('q-word').innerText = q.text;
+        document.getElementById('feedback-msg').innerText = '';
+
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+
+        q.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'opt-btn';
+            btn.innerText = opt;
+            btn.onclick = () => handleAnswer(btn, opt, q);
+            container.appendChild(btn);
+        });
+    }
+
+    function handleAnswer(btn, selected, q) {
+        const allBtns = document.querySelectorAll('.opt-btn');
+        allBtns.forEach(b => b.disabled = true);
+
+        if (selected === q.correct) {
+            btn.classList.add('correct');
+            document.getElementById('feedback-msg').style.color = '#4ade80';
+            document.getElementById('feedback-msg').innerText = '正解！ ⭕';
+            
+            setTimeout(() => {
+                quizQueue.shift();
+                renderQuestion();
+            }, 800);
+        } else {
+            btn.classList.add('wrong');
+            wrongCount++;
+            
+            allBtns.forEach(b => {
+                if (b.innerText === q.correct) b.classList.add('correct');
+            });
+
+            document.getElementById('feedback-msg').style.color = '#ef4444';
+            document.getElementById('feedback-msg').innerText = `錯誤！ (${q.text} = ${q.correct})`;
+
+            // 錯題懲罰：重新排入
+            const retryQ = quizQueue.shift();
+            retryQ.options = shuffle(retryQ.options);
+            quizQueue.push(retryQ);
+
+            setTimeout(() => {
+                renderQuestion();
+            }, 2500);
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('result-stats').innerHTML = 
+            `本次死亡次數：${wrongCount} 次`;
+    }
+</script>
+</body>
+</html>
