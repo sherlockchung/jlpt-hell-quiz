@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JLPT N2/N3 最終完全版 (零遺漏)</title>
+    <title>JLPT 地獄特訓</title>
     <style>
         :root {
-            --primary: #9f1239;
-            --primary-hover: #881337;
-            --success: #166534;
-            --error: #b91c1c;
-            --bg: #0f172a;
-            --card: #1e293b;
-            --text-main: #f1f5f9;
-            --text-sub: #94a3b8;
+            --primary: #881337; /* Rose 900 - 血紅 */
+            --primary-hover: #be123c;
+            --success: #15803d; /* Green 700 */
+            --error: #b91c1c; /* Red 700 */
+            --bg: #020617; /* Slate 950 - 極黑 */
+            --card: #0f172a; /* Slate 900 */
+            --text-main: #e2e8f0;
+            --text-sub: #64748b;
         }
 
         body {
@@ -32,20 +32,20 @@
             background-color: var(--card);
             width: 100%;
             max-width: 700px;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(225, 29, 72, 0.1);
             padding: 35px;
             position: relative;
-            border: 1px solid #334155;
+            border: 1px solid #1e293b;
         }
 
         h1 {
-            color: #fb7185;
+            color: #f43f5e;
             font-size: 2rem;
             margin: 0 0 10px 0;
             text-align: center;
             letter-spacing: 2px;
-            text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            text-shadow: 0 0 10px rgba(244, 63, 94, 0.5);
         }
         
         .subtitle {
@@ -53,18 +53,18 @@
             color: var(--text-sub);
             font-size: 0.9rem;
             margin-bottom: 30px;
-            line-height: 1.6;
+            letter-spacing: 1px;
         }
 
+        /* 進度條 */
         .stats-row {
             display: flex;
             justify-content: space-between;
             font-size: 0.85rem;
             color: var(--text-sub);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .progress-track {
@@ -80,41 +80,44 @@
             height: 100%;
             background: #e11d48;
             width: 0%;
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.3s ease;
             box-shadow: 0 0 15px #e11d48;
         }
 
+        /* 題目卡片 */
         .quiz-card {
-            background: #020617;
+            background: #0f172a;
             border: 1px solid #334155;
-            border-radius: 20px;
+            border-radius: 16px;
             padding: 40px 20px;
             text-align: center;
             margin-bottom: 30px;
             position: relative;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
         }
 
         .tag {
-            background: #881337;
-            color: #fecdd3;
-            padding: 6px 16px;
+            background: #4c0519;
+            color: #fda4af;
+            padding: 4px 12px;
             border-radius: 99px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: bold;
             display: inline-block;
             margin-bottom: 15px;
-            border: 1px solid #be123c;
+            border: 1px solid #9f1239;
+            letter-spacing: 1px;
         }
 
         .word-text {
             font-size: 3.5rem;
             font-weight: 900;
-            color: #f8fafc;
+            color: #f1f5f9;
             margin: 15px 0;
-            letter-spacing: 4px;
+            letter-spacing: 0.05em;
         }
 
+        /* 選項網格 */
         .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -123,48 +126,46 @@
 
         @media (max-width: 500px) {
             .options-grid { grid-template-columns: 1fr; }
-            .word-text { font-size: 2.5rem; }
+            .word-text { font-size: 2.8rem; }
             .container { padding: 20px; }
         }
 
         button.opt-btn {
             background: #1e293b;
             border: 1px solid #475569;
-            color: #e2e8f0;
-            padding: 20px;
-            border-radius: 14px;
-            font-size: 1.2rem;
+            color: #cbd5e1;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 1.1rem;
             cursor: pointer;
             transition: all 0.1s;
             font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 70px;
-            position: relative;
+            min-height: 65px;
         }
 
         button.opt-btn:hover:not(:disabled) {
-            border-color: #fb7185;
+            border-color: #f43f5e;
             background: #4c0519;
-            color: white;
-            transform: scale(1.02);
-            box-shadow: 0 0 15px rgba(251, 113, 133, 0.2);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(244, 63, 94, 0.2);
         }
 
         button.opt-btn.correct {
             background: #064e3b;
             color: #4ade80;
             border-color: #22c55e;
-            box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
         }
 
         button.opt-btn.wrong {
             background: #450a0a;
             color: #fca5a5;
             border-color: #ef4444;
+            opacity: 0.5;
             text-decoration: line-through;
-            opacity: 0.6;
         }
 
         .feedback-area {
@@ -173,25 +174,25 @@
             text-align: center;
             font-weight: bold;
             font-size: 1.1rem;
+            color: #fb7185;
             letter-spacing: 1px;
-            color: #fda4af;
         }
 
         .btn-primary {
             background: #be123c;
             color: white;
             border: none;
-            padding: 18px 50px;
+            padding: 16px 40px;
             border-radius: 12px;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 4px 20px rgba(190, 18, 60, 0.5);
+            box-shadow: 0 4px 15px rgba(190, 18, 60, 0.4);
             margin-top: 20px;
         }
         .btn-primary:hover { 
-            background: #9f1239;
+            background: #e11d48;
             transform: translateY(-2px);
         }
 
@@ -203,16 +204,14 @@
 <div class="container">
     <div id="start-screen">
         <h1>JLPT 地獄特訓</h1>
-        <div class="subtitle">
-            難度：<span style="color:#fb7185; font-weight:bold;">INSANE (懷疑人生版)</span><br>
-            全漢字 ➔ 選讀音 (100% 詞彙收錄)
-        </div>
-        <div style="margin: 30px 0; color: #94a3b8; font-size: 0.95rem; background: #020617; padding: 25px; border-radius: 16px; text-align: left; border: 1px solid #334155;">
-            <strong style="color: #f43f5e;">⚠️ 警告：</strong>
-            <ul style="margin: 10px 0 0 20px; padding: 0; line-height: 1.8;">
-                <li>已針對您的弱點（如：大地震、伝統、承諾）埋設惡魔陷阱。</li>
-                <li>這不是普通的測驗，這是為了讓你懷疑人生而設計的。</li>
-                <li>錯題會無情地重新排入隊列，直到你選對為止。</li>
+        <div class="subtitle">全漢字讀音測驗 (INSANE MODE)</div>
+        <div style="margin: 30px 0; color: #94a3b8; font-size: 0.9rem; background: #020617; padding: 20px; border-radius: 12px; text-align: left; border: 1px solid #334155; line-height: 1.8;">
+            <strong style="color: #f43f5e;">規則說明：</strong>
+            <ul style="margin: 5px 0 0 20px; padding: 0;">
+                <li>所有題目皆為「看漢字選拼音」。</li>
+                <li>選項包含極度相似的長短音、清濁音、促音陷阱。</li>
+                <li><strong>答對：</strong>題目從題庫中永久移除。</li>
+                <li><strong>答錯：</strong>題目會重新洗回隊列，直到你學會為止。</li>
             </ul>
         </div>
         <button class="btn-primary" onclick="startQuiz()">接受挑戰</button>
@@ -221,7 +220,7 @@
     <div id="quiz-screen" class="hidden">
         <div class="stats-row">
             <span id="progress-text">Progress: 0 / 20</span>
-            <span id="queue-text">Queue: 20</span>
+            <span id="queue-text">Remaining: 20</span>
         </div>
         <div class="progress-track">
             <div class="progress-fill" id="progress-fill"></div>
@@ -237,20 +236,22 @@
     </div>
 
     <div id="result-screen" class="hidden" style="text-align: center;">
-        <div style="font-size: 6rem; margin-bottom: 20px;">👹</div>
+        <div style="font-size: 5rem; margin-bottom: 10px;">💀</div>
         <h1 style="color: #fb7185;">生還確認</h1>
         <p style="font-size: 1.1rem; color: #cbd5e1; margin-bottom: 30px;">
-            恭喜你，你的日文底子比想像中更堅強。
+            恭喜，你的日文底子經得起地獄的考驗。
         </p>
-        <div id="result-stats" style="margin-bottom: 30px; font-weight: bold; color: #f1f5f9; font-size: 1.2rem;"></div>
+        <div id="result-stats" style="margin-bottom: 30px; font-weight: bold; color: #f1f5f9; font-size: 1.1rem;"></div>
         <button class="btn-primary" onclick="location.reload()">再入地獄</button>
     </div>
 </div>
 
 <script>
-    // 完整的單字庫：Batch 1 + Batch 2 + Batch 3 (無遺漏)
+    // ==========================================
+    // 完整資料庫 (Batch 1 + 2 + 3 + 針對性陷阱)
+    // ==========================================
     const rawData = [
-        // --- Batch 3: 最新加入與針對性陷阱 (High Priority) ---
+        // --- High Priority Traps ---
         {kanji: "行事", kana: "ぎょうじ", traps: ["こうじ", "ぎょうし"]},
         {kanji: "祝う", kana: "いわう", traps: ["のろう", "しゅくう"]},
         {kanji: "伝統", kana: "でんとう", traps: ["てんとう", "でんど", "てんどう"]},
@@ -540,552 +541,189 @@
         {kanji: "黴菌", kana: "ばいきん", traps: ["びきん", "ばいき"]},
         {kanji: "善玉菌", kana: "ぜんたまきん", traps: ["ぜんだまきん", "よしたまきん"]},
         
-        // --- Batch 1 & 2 (Merged) ---
-        {kanji: "発つ", kana: "たつ"},
-        {kanji: "着く", kana: "つく"},
-        {kanji: "通う", kana: "かよう"},
-        {kanji: "通る", kana: "とおる"},
-        {kanji: "座席", kana: "ざせき"},
-        {kanji: "往復", kana: "おうふく"},
-        {kanji: "片道", kana: "かたみち"},
-        {kanji: "宿泊", kana: "しゅくはく"},
-        {kanji: "滞在", kana: "たいざい"},
-        {kanji: "混雑", kana: "こんざつ"},
-        {kanji: "経由", kana: "けいゆ"},
-        {kanji: "乗車", kana: "じょうしゃ"},
-        {kanji: "下車", kana: "げしゃ"},
-        {kanji: "乗客", kana: "じょうきゃく"},
-        {kanji: "作成", kana: "さくせい"},
-        {kanji: "削除", kana: "さくじょ"},
-        {kanji: "入力", kana: "にゅうりょく"},
-        {kanji: "中古", kana: "ちゅうこ"},
-        {kanji: "操作", kana: "そうさ"},
-        {kanji: "修理", kana: "しゅうり"},
-        {kanji: "答案", kana: "とうあん"},
-        {kanji: "予防", kana: "よぼう"},
-        {kanji: "毛糸", kana: "けいと"},
-        {kanji: "編む", kana: "あむ"},
-        {kanji: "散らかる", kana: "ちらかる"},
-        {kanji: "退ける", kana: "どける"},
-        {kanji: "埃", kana: "ほこり"},
-        {kanji: "箒", kana: "ほうき"},
-        {kanji: "塵取り", kana: "ちりとり"},
-        {kanji: "干す", kana: "ほす"},
-        {kanji: "乾かす", kana: "かわかす"},
-        {kanji: "吊るす", kana: "つるす"},
-        {kanji: "茹でる", kana: "ゆでる"},
-        {kanji: "炒める", kana: "いためる"},
-        {kanji: "炊く", kana: "たく"},
-        {kanji: "煮る", kana: "にる"},
-        {kanji: "出来上がる", kana: "できあがる"},
-        {kanji: "裏返す", kana: "うらがえす"},
-        {kanji: "畳む", kana: "たたむ"},
-        {kanji: "炊事", kana: "すいじ"},
-        {kanji: "献立", kana: "こんだて"},
-        {kanji: "吐く", kana: "はく"},
-        {kanji: "齧る", kana: "かじる"},
-        {kanji: "酔う", kana: "よう"},
-        {kanji: "目眩", kana: "めまい"},
-        {kanji: "奢る", kana: "おごる"},
-        {kanji: "敬意", kana: "けいい"},
-        {kanji: "足首", kana: "あしくび"},
-        {kanji: "捻る", kana: "ひねる"},
-        {kanji: "血液", kana: "けつえき"},
-        {kanji: "汚染", kana: "おせん"},
-        {kanji: "内科", kana: "ないか"},
-        {kanji: "外科", kana: "げか"},
-        {kanji: "骨折", kana: "こっせつ"},
-        {kanji: "白髪", kana: "しらが"},
-        {kanji: "包帯", kana: "ほうたい"},
-        {kanji: "薬局", kana: "やっきょく"},
-        {kanji: "診察", kana: "しんさつ"},
-        {kanji: "診断", kana: "しんだん"},
-        {kanji: "睡眠", kana: "すいみん"},
-        {kanji: "寿命", kana: "じゅみょう"},
-        {kanji: "髭", kana: "ひげ"},
-        {kanji: "剃る", kana: "そる"},
-        {kanji: "櫛", kana: "くし"},
-        {kanji: "梳かす", kana: "とかす"},
-        {kanji: "相棒", kana: "あいぼう"},
-        {kanji: "派手", kana: "はで"},
-        {kanji: "地味", kana: "じみ"},
-        {kanji: "卑怯", kana: "ひきょう"},
-        {kanji: "威張る", kana: "いばる"},
-        {kanji: "我儘", kana: "わがまま"},
-        {kanji: "慎重", kana: "しんちょう"},
-        {kanji: "要領", kana: "ようりょう"},
-        {kanji: "謙虚", kana: "けんきょ"},
-        {kanji: "生意気", kana: "なまいき"},
-        {kanji: "厚かましい", kana: "あつかましい"},
-        {kanji: "平気", kana: "へいき"},
-        {kanji: "裏切る", kana: "うらぎる"},
-        {kanji: "慌てる", kana: "あわてる"},
-        {kanji: "清潔", kana: "せいけつ"},
-        {kanji: "見掛け", kana: "みかけ"},
-        {kanji: "誤解", kana: "ごかい"},
-        {kanji: "道徳", kana: "どうとく"},
-        {kanji: "炒る", kana: "いる"},
-        {kanji: "煮える", kana: "にえる"},
-        {kanji: "仕上がる", kana: "しあがる"},
-        {kanji: "倉庫", kana: "そうこ"},
-        {kanji: "黴", kana: "かび"},
-        {kanji: "腐る", kana: "くさる"},
-        {kanji: "掃く", kana: "はく"},
-        {kanji: "拭く", kana: "ふく"},
-        {kanji: "絞る", kana: "しぼる"},
-        {kanji: "酔っ払い", kana: "よっぱらい"},
-        {kanji: "摘む", kana: "つまむ"},
-        {kanji: "胡椒", kana: "こしょう"},
-        {kanji: "酢", kana: "す"},
-        {kanji: "塩辛い", kana: "しおからい"},
-        {kanji: "酸っぱい", kana: "すっぱい"},
-        {kanji: "屈む", kana: "かがむ"},
-        {kanji: "消毒", kana: "しょうどく"},
-        {kanji: "青白い", kana: "あおじろい"},
-        {kanji: "腰掛ける", kana: "こしかける"},
-        {kanji: "足跡", kana: "あしあと"},
-        {kanji: "症状", kana: "しょうじょう"},
-        {kanji: "崩す", kana: "くずす"},
-        {kanji: "罹る", kana: "かかる"},
-        {kanji: "伝染", kana: "でんせん"},
-        {kanji: "抜ける", kana: "ぬける"},
-        {kanji: "効く", kana: "きく"},
-        {kanji: "震える", kana: "ふるえる"},
-        {kanji: "苦痛", kana: "くつう"},
-        {kanji: "患者", kana: "かんじゃ"},
-        {kanji: "診る", kana: "みる"},
-        {kanji: "這う", kana: "はう"},
-        {kanji: "凭れる", kana: "もたれる"},
-        {kanji: "余分", kana: "よぶん"},
-        {kanji: "適度", kana: "てきど"},
-        {kanji: "徹夜", kana: "てつや"},
-        {kanji: "不足", kana: "ふそく"},
-        {kanji: "嚔", kana: "くしゃみ"},
-        {kanji: "吃逆", kana: "しゃっくり"},
-        {kanji: "欠伸", kana: "あくび"},
-        {kanji: "長生き", kana: "ながいき"},
-        {kanji: "肌", kana: "はだ"},
-        {kanji: "荒れる", kana: "あれる"},
-        {kanji: "剃刀", kana: "かみそり"},
-        {kanji: "怒鳴る", kana: "どなる"},
-        {kanji: "噂", kana: "うわさ"},
-        {kanji: "睨む", kana: "にらむ"},
-        {kanji: "不平", kana: "ふへい"},
-        {kanji: "憎らしい", kana: "にくらしい"},
-        {kanji: "憎む", kana: "にくむ"},
-        {kanji: "恨む", kana: "うらむ"},
-        {kanji: "憧れる", kana: "あこがれる"},
-        {kanji: "妨げる", kana: "さまたげる"},
-        {kanji: "防ぐ", kana: "ふせぐ"},
-        {kanji: "哀れ", kana: "あわれ"},
-        {kanji: "生憎", kana: "あいにく"},
-        {kanji: "保つ", kana: "たもつ"},
-        {kanji: "勇ましい", kana: "いさましい"},
-        {kanji: "強気", kana: "つよき"},
-        {kanji: "弱気", kana: "よわき"},
-        {kanji: "強引", kana: "ごういん"},
-        {kanji: "洒落", kana: "しゃれ"},
-        {kanji: "大人しい", kana: "おとなしい"},
-        {kanji: "喧しい", kana: "やかましい"},
-        {kanji: "粗忽", kana: "そそっかしい"},
-        {kanji: "不器用", kana: "ぶきよう"},
-        {kanji: "鋭い", kana: "するどい"},
-        {kanji: "鈍い", kana: "にぶい"},
-        {kanji: "穏やか", kana: "おだやか"},
-        {kanji: "長所", kana: "ちょうしょ"},
-        {kanji: "短所", kana: "たんしょ"},
-        {kanji: "図々しい", kana: "ずうずうしい"},
-        {kanji: "吝嗇", kana: "けち"},
-        {kanji: "飽きる", kana: "あきる"},
-        {kanji: "呑気", kana: "のんき"},
-        {kanji: "率直", kana: "そっちょく"},
-        {kanji: "焦る", kana: "あせる"},
-        {kanji: "機嫌", kana: "きげん"},
-        {kanji: "不潔", kana: "ふけつ"},
-        {kanji: "相変わらず", kana: "あいかわらず"},
-        {kanji: "狡い", kana: "ずるい"},
-        {kanji: "悄っそり", kana: "こっそり"},
-        {kanji: "疑う", kana: "うたがう"},
-        {kanji: "敬う", kana: "うやまう"},
-        {kanji: "羨む", kana: "うらやむ"},
-        {kanji: "悩む", kana: "なやむ"},
-        {kanji: "失望", kana: "しつぼう"},
-        {kanji: "羨ましい", kana: "うらやましい"},
-        {kanji: "気の毒", kana: "きのどく"},
-        {kanji: "謝る", kana: "あやまる"},
-        {kanji: "慰める", kana: "なぐさめる"},
-        {kanji: "罵る", kana: "ののしる"},
-        {kanji: "貶す", kana: "けなす"},
-        {kanji: "避ける", kana: "さける"},
-        {kanji: "逃げる", kana: "にげる"},
-        {kanji: "忠告", kana: "ちゅうこく"},
-        {kanji: "助言", kana: "じょげん"},
-        {kanji: "言いつける", kana: "いいつける"},
-        {kanji: "自慢", kana: "じまん"},
-        {kanji: "隠す", kana: "かくす"},
-        {kanji: "秘密", kana: "ひみつ"},
-        {kanji: "仲直り", kana: "なかなおり"},
-        {kanji: "作法", kana: "さほう"},
-        {kanji: "見っともない", kana: "みっともない"},
-        {kanji: "失恋", kana: "しつれん"},
-        {kanji: "余計", kana: "よけい"},
-        {kanji: "大した", kana: "たいした"},
-        {kanji: "破片", kana: "はへん"},
-        {kanji: "切っ掛け", kana: "きっかけ"},
-        {kanji: "契機", kana: "けいき"},
-        {kanji: "常に", kana: "つねに"},
-        {kanji: "叩く", kana: "たたく"},
-        {kanji: "夫々", kana: "それぞれ"},
-        {kanji: "比較", kana: "ひかく"},
-        {kanji: "占める", kana: "しめる"},
-        {kanji: "序に", kana: "ついでに"},
-        {kanji: "逆さに", kana: "さかさに"},
-        {kanji: "中ても", kana: "なかでも"},
-        {kanji: "既に", kana: "すでに"},
-        {kanji: "何とか", kana: "なんとか"},
-        {kanji: "たった", kana: "たった"},
-        {kanji: "次第に", kana: "しだいに"},
-        {kanji: "滅多に", kana: "めったに"},
-        {kanji: "必死に", kana: "ひっしに"},
-        {kanji: "一先ず", kana: "ひとまず"},
-        {kanji: "頻りに", kana: "しきりに"},
-        {kanji: "態と", kana: "わざと"},
-        {kanji: "近々", kana: "ちかじか"},
-        {kanji: "案外", kana: "あんがい"},
-        {kanji: "案の定", kana: "あんのじょう"},
-        {kanji: "自ら", kana: "みずから"},
-        {kanji: "凝っくり", kana: "じっくり"},
-        {kanji: "一瞬", kana: "いっしゅん"},
-        {kanji: "若干", kana: "じゃっかん"},
-        {kanji: "今や", kana: "いまや"},
-        {kanji: "欠かせない", kana: "かかせない"},
-        {kanji: "欠品", kana: "けっぴん"},
-        {kanji: "せっせと", kana: "せっせと"},
-        {kanji: "必ずしも", kana: "かならずしも"},
-        {kanji: "若しも", kana: "もしも"},
-        {kanji: "早速", kana: "さっそく"},
-        {kanji: "余程", kana: "よほど"},
-        {kanji: "寧ろ", kana: "むしろ"},
-        {kanji: "万が一", kana: "まんがいち"},
-        {kanji: "当分", kana: "とうぶん"},
-        {kanji: "今一", kana: "いまいち"},
-        {kanji: "折角", kana: "せっかく"},
-        {kanji: "或いは", kana: "あるいは"},
-        {kanji: "そもそも", kana: "そもそも"},
-        {kanji: "見込み", kana: "みこみ"},
-        {kanji: "僅か", kana: "わずか"},
-        {kanji: "実に", kana: "じつに"},
-        {kanji: "実は", kana: "じつは"},
-        {kanji: "正に", kana: "まさに"},
-        {kanji: "一応", kana: "いちおう"},
-        {kanji: "忽ち", kana: "たちまち"},
-        {kanji: "今に", kana: "いまに"},
-        {kanji: "該当", kana: "がいとう"},
-        {kanji: "片方", kana: "かたほう"},
-        {kanji: "片思い", kana: "かたおもい"},
-        {kanji: "打ち合わせ", kana: "うちあわせ"},
-        {kanji: "団体", kana: "だんたい"},
-        {kanji: "個人", kana: "こじん"},
-        {kanji: "日帰り", kana: "ひがえり"},
-        {kanji: "二泊三日", kana: "にはくみっか"},
-        {kanji: "別荘", kana: "べっそう"},
-        {kanji: "通う", kana: "かよう"},
-        {kanji: "通る", kana: "とおる"},
-        {kanji: "通す", kana: "とおす"},
-        {kanji: "見送る", kana: "みおくる"},
-        {kanji: "出迎える", kana: "でむかえる"},
-        {kanji: "送迎", kana: "そうげい"},
-        {kanji: "名所", kana: "めいしょ"},
-        {kanji: "巡る", kana: "めぐる"},
-        {kanji: "活気", kana: "かっき"},
-        {kanji: "大通り", kana: "おおどおり"},
-        {kanji: "川沿い", kana: "かわぞい"},
-        {kanji: "停留所", kana: "ていりゅうじょ"},
-        {kanji: "迷う", kana: "まよう"},
-        {kanji: "売店", kana: "ばいてん"},
-        {kanji: "横断", kana: "おうだん"},
-        {kanji: "縦断", kana: "じゅうだん"},
-        {kanji: "発つ", kana: "たつ"},
-        {kanji: "着く", kana: "つく"},
-        {kanji: "到着", kana: "とうちゃく"},
-        {kanji: "飛行機", kana: "ひこうき"},
-        {kanji: "行方", kana: "ゆくえ"},
-        {kanji: "回数券", kana: "かいすうけん"},
-        {kanji: "定員", kana: "ていいん"},
-        {kanji: "地形", kana: "ちけい"},
-        {kanji: "列島", kana: "れっとう"},
-        {kanji: "南北", kana: "なんぼく"},
-        {kanji: "南北東西", kana: "なんぼくとうざい"},
-        {kanji: "半島", kana: "はんとう"},
-        {kanji: "岬", kana: "みさき"},
-        {kanji: "なだらか", kana: "なだらか"},
-        {kanji: "頂上", kana: "ちょうじょう"},
-        {kanji: "麓", kana: "ふもと"},
-        {kanji: "山腹", kana: "さんぷく"},
-        {kanji: "囲まれた", kana: "かこまれた"},
-        {kanji: "盆地", kana: "ぼんち"},
-        {kanji: "平野", kana: "へいや"},
-        {kanji: "湧く", kana: "わく"},
-        {kanji: "薄暗い", kana: "うすぐらい"},
-        {kanji: "地盤", kana: "じばん"},
-        {kanji: "砂漠", kana: "さばく"},
-        {kanji: "岸", kana: "きし"},
-        {kanji: "沖", kana: "おき"},
-        {kanji: "近づく", kana: "ちかづく"},
-        {kanji: "嵐", kana: "あらし"},
-        {kanji: "巻き込む", kana: "まきこむ"},
-        {kanji: "霧", kana: "きり"},
-        {kanji: "気候", kana: "きこう"},
-        {kanji: "夕立", kana: "ゆうだち"},
-        {kanji: "風景", kana: "ふうけい"},
-        {kanji: "眺める", kana: "ながめる"},
-        {kanji: "眺め", kana: "ながめ"},
-        {kanji: "見上げる", kana: "みあげる"},
-        {kanji: "見下ろす", kana: "みおろす"},
-        {kanji: "地平線", kana: "ちへいせん"},
-        {kanji: "夕日", kana: "ゆうひ"},
-        {kanji: "暮れる", kana: "くれる"},
-        {kanji: "暮れ", kana: "くれ"},
-        {kanji: "新学期", kana: "しんがっき"},
-        {kanji: "上旬", kana: "じょうじゅん"},
-        {kanji: "中旬", kana: "ちゅうじゅん"},
-        {kanji: "下旬", kana: "げじゅん"},
-        {kanji: "梅雨が明ける", kana: "つゆがあける"},
-        {kanji: "夜明け", kana: "よあけ"},
-        {kanji: "湿度", kana: "しつど"},
-        {kanji: "蒸し暑い", kana: "むしあつい"},
-        {kanji: "汗を掻く", kana: "あせをかく"},
-        {kanji: "果実", kana: "かじつ"},
-        {kanji: "実る", kana: "みのる"},
-        {kanji: "実", kana: "み"},
-        {kanji: "稲", kana: "いね"},
-        {kanji: "尖る", kana: "とがる"},
-        {kanji: "好天", kana: "こうてん"},
-        {kanji: "激しい", kana: "はげしい"},
-        {kanji: "霜", kana: "しも"},
-        {kanji: "吹雪", kana: "ふぶき"},
-        {kanji: "凍える", kana: "こごえる"},
-        {kanji: "持ち上げる", kana: "もちあげる"},
-        {kanji: "取り上げる", kana: "とりあげる"},
-        {kanji: "真っ赤", kana: "まっか"},
-        {kanji: "真っ白", kana: "まっしろ"},
-        {kanji: "真っ暗", kana: "まっくら"},
-        {kanji: "真っ青", kana: "まっさお"},
-        {kanji: "惚んやり", kana: "ぼんやり"},
-        {kanji: "遥かに", kana: "はるかに"},
-        {kanji: "一段と", kana: "いちだんと"},
-        {kanji: "決まって", kana: "きまって"},
-        {kanji: "児童", kana: "じどう"},
-        {kanji: "幼児", kana: "ようじ"},
-        {kanji: "進学", kana: "しんがく"},
-        {kanji: "転校", kana: "てんこう"},
-        {kanji: "在学中", kana: "ざいがくちゅう"},
-        {kanji: "院生", kana: "いんせい"},
-        {kanji: "ゼミ", kana: "ぜみ"},
-        {kanji: "演習", kana: "えんしゅう"},
-        {kanji: "単位", kana: "たんい"},
-        {kanji: "休講", kana: "きゅうこう"},
-        {kanji: "自習", kana: "じしゅう"},
-        {kanji: "学期", kana: "がっき"},
-        {kanji: "時間割", kana: "じかんわり"},
-        {kanji: "講義", kana: "こうぎ"},
-        {kanji: "科目", kana: "かもく"},
-        {kanji: "講師", kana: "こうし"},
-        {kanji: "実習", kana: "じっしゅう"},
-        {kanji: "採点", kana: "さいてん"},
-        {kanji: "期末", kana: "きまつ"},
-        {kanji: "中間試験", kana: "ちゅうかんしけん"},
-        {kanji: "筆記", kana: "ひっき"},
-        {kanji: "問い", kana: "とい"},
-        {kanji: "教科書", kana: "きょうかしょ"},
-        {kanji: "成績", kana: "せいせき"},
-        {kanji: "評価", kana: "ひょうか"},
-        {kanji: "優れる", kana: "すぐれる"},
-        {kanji: "劣る", kana: "おとる"},
-        {kanji: "学問", kana: "がくもん"},
-        {kanji: "物理", kana: "ぶつり"},
-        {kanji: "化学", kana: "かがく"},
-        {kanji: "生物学", kana: "せいぶつがく"},
-        {kanji: "経済学", kana: "けいざいがく"},
-        {kanji: "人文", kana: "じんぶん"},
-        {kanji: "哲学", kana: "てつがく"},
-        {kanji: "専攻", kana: "せんこう"},
-        {kanji: "研究", kana: "けんきゅう"},
-        {kanji: "妥当", kana: "だとう"},
-        {kanji: "実験", kana: "じっけん"},
-        {kanji: "証明", kana: "しょうめい"},
-        {kanji: "学会", kana: "がっかい"},
-        {kanji: "認める", kana: "みとめる"},
-        {kanji: "就職", kana: "しゅうしょく"},
-        {kanji: "研修", kana: "けんしゅう"},
-        {kanji: "一流", kana: "いちりゅう"},
-        {kanji: "月給", kana: "げっきゅう"},
-        {kanji: "怠ける", kana: "なまける"},
-        {kanji: "怠け者", kana: "なまけもの"},
-        {kanji: "熱中", kana: "ねっちゅう"},
-        {kanji: "休暇", kana: "きゅうか"},
-        {kanji: "申請", kana: "しんせい"},
-        {kanji: "思いつく", kana: "おもいつく"},
-        {kanji: "提案", kana: "ていあん"},
-        {kanji: "慌ただしい", kana: "あわただしい"},
-        {kanji: "能率", kana: "のうりつ"},
-        {kanji: "失業", kana: "しつぎょう"},
-        {kanji: "稼ぐ", kana: "かせぐ"},
-        {kanji: "儲ける", kana: "もうける"},
-        {kanji: "儲かる", kana: "もうかる"},
-        {kanji: "稼働", kana: "かどう"},
-        {kanji: "破産", kana: "はさん"},
-        {kanji: "潰れる", kana: "つぶれる"},
-        {kanji: "経営", kana: "けいえい"},
-        {kanji: "進出", kana: "しんしゅつ"},
-        {kanji: "資本金", kana: "しほんきん"},
-        {kanji: "募集", kana: "ぼしゅう"},
-        {kanji: "重役", kana: "じゅうやく"},
-        {kanji: "指示", kana: "しじ"},
-        {kanji: "才能", kana: "さいのう"},
-        {kanji: "労働", kana: "ろうどう"},
-        {kanji: "組合", kana: "くみあい"},
-        {kanji: "条件", kana: "じょうけん"},
-        {kanji: "改善", kana: "かいぜん"},
-        {kanji: "要求", kana: "ようきゅう"},
-        {kanji: "利害", kana: "りがい"},
-        {kanji: "利益", kana: "りえき"},
-        {kanji: "弁護士", kana: "べんごし"},
-        {kanji: "金融", kana: "きんゆう"},
-        {kanji: "一流校", kana: "いちりゅうこう"},
-        {kanji: "引き出す", kana: "ひきだす"},
-        {kanji: "引き受ける", kana: "ひきうける"},
-        {kanji: "専門職", kana: "せんもんしょく"},
-        {kanji: "技術職", kana: "ぎじゅつしょく"},
-        {kanji: "報道", kana: "ほうどう"},
-        {kanji: "報道陣", kana: "ほうどうじん"},
-        {kanji: "広告", kana: "こうこく"},
-        {kanji: "朝刊", kana: "ちょうかん"},
-        {kanji: "夕刊", kana: "ゆうかん"},
-        {kanji: "取材", kana: "しゅざい"},
-        {kanji: "入手", kana: "にゅうしゅ"},
-        {kanji: "発行", kana: "はっこう"},
-        {kanji: "世間", kana: "せけん"},
-        {kanji: "話題", kana: "わだい"},
-        {kanji: "注目", kana: "ちゅうもく"},
-        {kanji: "見出し", kana: "みだし"},
-        {kanji: "一面", kana: "いちめん"},
-        {kanji: "総合欄", kana: "そうごうらん"},
-        {kanji: "国際欄", kana: "こくさいらん"},
-        {kanji: "内容", kana: "ないよう"},
-        {kanji: "主な", kana: "おもな"},
-        {kanji: "適切な", kana: "てきせつな"},
-        {kanji: "興味深い", kana: "きょうみぶかい"},
-        {kanji: "詳細", kana: "しょうさい"},
-        {kanji: "大まか", kana: "おおまか"},
-        {kanji: "正確", kana: "せいかくな"},
-        {kanji: "出鱈目", kana: "でたらめ"},
-        {kanji: "衝撃的", kana: "しょうげきてき"},
-        {kanji: "番組", kana: "ばんぐみ"},
-        {kanji: "放送", kana: "ほうそう"},
-        {kanji: "再放送", kana: "さいほうそう"},
-        {kanji: "制作", kana: "せいさく"},
-        {kanji: "宣伝", kana: "せんでん"},
-        {kanji: "映像", kana: "えいぞう"},
-        {kanji: "音声", kana: "おんせい"},
-        {kanji: "著名人", kana: "ちょめいじん"},
-        {kanji: "旅", kana: "たび"},
-        {kanji: "娯楽", kana: "ごらく"},
-        {kanji: "退屈", kana: "たいくつ"},
-        {kanji: "詰らない", kana: "つまらない"},
-        {kanji: "下らない", kana: "くだらない"},
-        {kanji: "評判", kana: "ひょうばん"},
-        {kanji: "魅力", kana: "みりょく"},
-        {kanji: "訪問", kana: "ほうもん"},
-        {kanji: "削除", kana: "さくじょ"},
-        {kanji: "消去", kana: "しょうきょ"},
-        {kanji: "受信", kana: "じゅしん"},
-        {kanji: "送受信", kana: "そうじゅしん"},
-        {kanji: "添付", kana: "てんぷ"},
-        {kanji: "種類", kana: "しゅるい"},
-        {kanji: "通信機能", kana: "つうしんきのう"},
-        {kanji: "設定", kana: "せってい"},
-        {kanji: "挿入", kana: "そうにゅう"},
-        {kanji: "拡大", kana: "かくだい"},
-        {kanji: "縮小", kana: "しゅくしょう"},
-        {kanji: "保存", kana: "ほぞん"},
-        {kanji: "接続", kana: "せつぞく"},
-        {kanji: "検索", kana: "けんさく"},
-        {kanji: "公式", kana: "こうしき"},
-        {kanji: "起動", kana: "きどう"},
-        {kanji: "立ち上げる", kana: "たちあげる"},
-        {kanji: "立ち上がる", kana: "たちあがる"},
-        {kanji: "盛り上げる", kana: "もりあげる"},
-        {kanji: "終了", kana: "しゅうりょう"},
-        {kanji: "共有", kana: "きょうゆう"},
-        {kanji: "湖", kana: "みずうみ"},
-        {kanji: "砂", kana: "すな"},
-        {kanji: "泥", kana: "どろ"},
-        {kanji: "滝", kana: "たき"},
-        {kanji: "虹", kana: "にじ"},
-        {kanji: "昨夜", kana: "さくや"},
-        {kanji: "日差し", kana: "ひざし"},
-        {kanji: "雇う", kana: "やとう"},
-        {kanji: "雇われる", kana: "やとわれる"},
-        {kanji: "当てはまる", kana: "あてはまる"},
-        {kanji: "張り切る", kana: "はりきる"},
-        {kanji: "追いかける", kana: "おいかける"},
-        {kanji: "就任", kana: "しゅうにん"},
-        {kanji: "勤める", kana: "つとめる"},
-        {kanji: "損害", kana: "そんがい"},
-        {kanji: "組織", kana: "そしき"},
-        {kanji: "競技", kana: "きょうぎ"},
-        {kanji: "出場", kana: "しゅつじょう"},
-        {kanji: "面倒", kana: "めんどう"},
-        {kanji: "幼稚園", kana: "ようちえん"},
-        {kanji: "筆記試験", kana: "ひっきしけん"},
-        {kanji: "教授", kana: "きょうじゅ"},
-        {kanji: "受け持つ", kana: "うけもつ"},
-        {kanji: "担当", kana: "たんとう"},
-        {kanji: "国立", kana: "こくりつ"},
-        {kanji: "私立", kana: "しりつ"},
-        {kanji: "参考文献", kana: "さんこうぶんけん"},
-        {kanji: "応募", kana: "おうぼ"},
-        {kanji: "手当", kana: "てあて"},
-        {kanji: "活躍", kana: "かつやく"},
-        {kanji: "従う", kana: "したがう"},
-        {kanji: "選手", kana: "せんしゅ"},
-        {kanji: "攻める", kana: "せめる"},
-        {kanji: "勝負", kana: "しょうぶ"},
-        {kanji: "勝敗", kana: "しょうはい"},
-        {kanji: "敗れる", kana: "やぶれる"},
-        {kanji: "引き分け", kana: "ひきわけ"},
-        {kanji: "読書", kana: "どくしょ"},
-        {kanji: "著者", kana: "ちょしゃ"},
-        {kanji: "書籍", kana: "しょせき"},
-        {kanji: "目次", kana: "もくじ"},
-        {kanji: "索引", kana: "さくいん"},
-        {kanji: "評論", kana: "ひょうろん"},
-        {kanji: "執筆", kana: "しっぴつ"},
-        {kanji: "古典", kana: "こてん"},
-        {kanji: "訳す", kana: "やくす"},
-        {kanji: "小説", kana: "しょうせつ"},
-        {kanji: "傑作", kana: "けっさく"},
-        {kanji: "名場面", kana: "めいばめん"},
-        {kanji: "随筆", kana: "ずいひつ"},
-        {kanji: "見つかる", kana: "みつかる"},
-        {kanji: "粗筋", kana: "あらすじ"},
-        {kanji: "演劇", kana: "えんげき"},
-        {kanji: "劇場", kana: "げきじょう"},
-        {kanji: "芝居", kana: "しばい"},
-        {kanji: "演技", kana: "えんぎ"},
-        {kanji: "主役", kana: "しゅやく"},
-        {kanji: "脇役", kana: "わきやく"},
-        {kanji: "舞台", kana: "ぶたい"},
-        {kanji: "幕", kana: "まく"},
-        {kanji: "台詞", kana: "せりふ"},
-        {kanji: "演奏", kana: "えんそう"},
-        {kanji: "裁縫", kana: "さいほう"},
-        {kanji: "工芸", kana: "こうげい"},
-        {kanji: "綿", kana: "わた"},
-        {kanji: "詰める", kana: "つめる"},
-        {kanji: "削る", kana: "けずる"},
-        {kanji: "彫る", kana: "ほる"}
+        // --- Batch 1 & 2 (No Duplicates) ---
+        {kanji: "発つ", kana: "たつ"}, {kanji: "着く", kana: "つく"}, {kanji: "通う", kana: "かよう"},
+        {kanji: "通る", kana: "とおる"}, {kanji: "座席", kana: "ざせき"}, {kanji: "往復", kana: "おうふく"},
+        {kanji: "片道", kana: "かたみち"}, {kanji: "宿泊", kana: "しゅくはく"}, {kanji: "滞在", kana: "たいざい"},
+        {kanji: "混雑", kana: "こんざつ"}, {kanji: "経由", kana: "けいゆ"}, {kanji: "乗車", kana: "じょうしゃ"},
+        {kanji: "下車", kana: "げしゃ"}, {kanji: "乗客", kana: "じょうきゃく"}, {kanji: "作成", kana: "さくせい"},
+        {kanji: "削除", kana: "さくじょ"}, {kanji: "入力", kana: "にゅうりょく"}, {kanji: "中古", kana: "ちゅうこ"},
+        {kanji: "操作", kana: "そうさ"}, {kanji: "修理", kana: "しゅうり"}, {kanji: "答案", kana: "とうあん"},
+        {kanji: "予防", kana: "よぼう"}, {kanji: "毛糸", kana: "けいと"}, {kanji: "編む", kana: "あむ"},
+        {kanji: "散らかる", kana: "ちらかる"}, {kanji: "退ける", kana: "どける"}, {kanji: "埃", kana: "ほこり"},
+        {kanji: "箒", kana: "ほうき"}, {kanji: "塵取り", kana: "ちりとり"}, {kanji: "干す", kana: "ほす"},
+        {kanji: "乾かす", kana: "かわかす"}, {kanji: "吊るす", kana: "つるす"}, {kanji: "茹でる", kana: "ゆでる"},
+        {kanji: "炒める", kana: "いためる"}, {kanji: "炊く", kana: "たく"}, {kanji: "煮る", kana: "にる"},
+        {kanji: "出来上がる", kana: "できあがる"}, {kanji: "裏返す", kana: "うらがえす"}, {kanji: "畳む", kana: "たたむ"},
+        {kanji: "炊事", kana: "すいじ"}, {kanji: "献立", kana: "こんだて"}, {kanji: "吐く", kana: "はく"},
+        {kanji: "齧る", kana: "かじる"}, {kanji: "酔う", kana: "よう"}, {kanji: "目眩", kana: "めまい"},
+        {kanji: "奢る", kana: "おごる"}, {kanji: "敬意", kana: "けいい"}, {kanji: "足首", kana: "あしくび"},
+        {kanji: "捻る", kana: "ひねる"}, {kanji: "血液", kana: "けつえき"}, {kanji: "汚染", kana: "おせん"},
+        {kanji: "内科", kana: "ないか"}, {kanji: "外科", kana: "げか"}, {kanji: "骨折", kana: "こっせつ"},
+        {kanji: "白髪", kana: "しらが"}, {kanji: "包帯", kana: "ほうたい"}, {kanji: "薬局", kana: "やっきょく"},
+        {kanji: "診察", kana: "しんさつ"}, {kanji: "診断", kana: "しんだん"}, {kanji: "睡眠", kana: "すいみん"},
+        {kanji: "寿命", kana: "じゅみょう"}, {kanji: "髭", kana: "ひげ"}, {kanji: "剃る", kana: "そる"},
+        {kanji: "櫛", kana: "くし"}, {kanji: "梳かす", kana: "とかす"}, {kanji: "相棒", kana: "あいぼう"},
+        {kanji: "派手", kana: "はで"}, {kanji: "地味", kana: "じみ"}, {kanji: "卑怯", kana: "ひきょう"},
+        {kanji: "威張る", kana: "いばる"}, {kanji: "我儘", kana: "わがまま"}, {kanji: "慎重", kana: "しんちょう"},
+        {kanji: "要領", kana: "ようりょう"}, {kanji: "謙虚", kana: "けんきょ"}, {kanji: "生意気", kana: "なまいき"},
+        {kanji: "厚かましい", kana: "あつかましい"}, {kanji: "平気", kana: "へいき"}, {kanji: "裏切る", kana: "うらぎる"},
+        {kanji: "慌てる", kana: "あわてる"}, {kanji: "清潔", kana: "せいけつ"}, {kanji: "見掛け", kana: "みかけ"},
+        {kanji: "誤解", kana: "ごかい"}, {kanji: "道徳", kana: "どうとく"}, {kanji: "炒る", kana: "いる"},
+        {kanji: "煮える", kana: "にえる"}, {kanji: "仕上がる", kana: "しあがる"}, {kanji: "倉庫", kana: "そうこ"},
+        {kanji: "黴", kana: "かび"}, {kanji: "腐る", kana: "くさる"}, {kanji: "掃く", kana: "はく"},
+        {kanji: "拭く", kana: "ふく"}, {kanji: "絞る", kana: "しぼる"}, {kanji: "酔っ払い", kana: "よっぱらい"},
+        {kanji: "摘む", kana: "つまむ"}, {kanji: "胡椒", kana: "こしょう"}, {kanji: "酢", kana: "す"},
+        {kanji: "塩辛い", kana: "しおからい"}, {kanji: "酸っぱい", kana: "すっぱい"}, {kanji: "屈む", kana: "かがむ"},
+        {kanji: "消毒", kana: "しょうどく"}, {kanji: "青白い", kana: "あおじろい"}, {kanji: "腰掛ける", kana: "こしかける"},
+        {kanji: "足跡", kana: "あしあと"}, {kanji: "症状", kana: "しょうじょう"}, {kanji: "崩す", kana: "くずす"},
+        {kanji: "罹る", kana: "かかる"}, {kanji: "伝染", kana: "でんせん"}, {kanji: "抜ける", kana: "ぬける"},
+        {kanji: "効く", kana: "きく"}, {kanji: "震える", kana: "ふるえる"}, {kanji: "苦痛", kana: "くつう"},
+        {kanji: "患者", kana: "かんじゃ"}, {kanji: "診る", kana: "みる"}, {kanji: "這う", kana: "はう"},
+        {kanji: "凭れる", kana: "もたれる"}, {kanji: "余分", kana: "よぶん"}, {kanji: "適度", kana: "てきど"},
+        {kanji: "徹夜", kana: "てつや"}, {kanji: "不足", kana: "ふそく"}, {kanji: "嚔", kana: "くしゃみ"},
+        {kanji: "吃逆", kana: "しゃっくり"}, {kanji: "欠伸", kana: "あくび"}, {kanji: "長生き", kana: "ながいき"},
+        {kanji: "肌", kana: "はだ"}, {kanji: "荒れる", kana: "あれる"}, {kanji: "剃刀", kana: "かみそり"},
+        {kanji: "怒鳴る", kana: "どなる"}, {kanji: "噂", kana: "うわさ"}, {kanji: "睨む", kana: "にらむ"},
+        {kanji: "不平", kana: "ふへい"}, {kanji: "憎らしい", kana: "にくらしい"}, {kanji: "憎む", kana: "にくむ"},
+        {kanji: "恨む", kana: "うらむ"}, {kanji: "憧れる", kana: "あこがれる"}, {kanji: "妨げる", kana: "さまたげる"},
+        {kanji: "防ぐ", kana: "ふせぐ"}, {kanji: "哀れ", kana: "あわれ"}, {kanji: "生憎", kana: "あいにく"},
+        {kanji: "保つ", kana: "たもつ"}, {kanji: "勇ましい", kana: "いさましい"}, {kanji: "強気", kana: "つよき"},
+        {kanji: "弱気", kana: "よわき"}, {kanji: "強引", kana: "ごういん"}, {kanji: "洒落", kana: "しゃれ"},
+        {kanji: "大人しい", kana: "おとなしい"}, {kanji: "喧しい", kana: "やかましい"}, {kanji: "粗忽", kana: "そそっかしい"},
+        {kanji: "不器用", kana: "ぶきよう"}, {kanji: "鋭い", kana: "するどい"}, {kanji: "鈍い", kana: "にぶい"},
+        {kanji: "穏やか", kana: "おだやか"}, {kanji: "長所", kana: "ちょうしょ"}, {kanji: "短所", kana: "たんしょ"},
+        {kanji: "図々しい", kana: "ずうずうしい"}, {kanji: "吝嗇", kana: "けち"}, {kanji: "飽きる", kana: "あきる"},
+        {kanji: "呑気", kana: "のんき"}, {kanji: "率直", kana: "そっちょく"}, {kanji: "焦る", kana: "あせる"},
+        {kanji: "機嫌", kana: "きげん"}, {kanji: "不潔", kana: "ふけつ"}, {kanji: "相変わらず", kana: "あいかわらず"},
+        {kanji: "狡い", kana: "ずるい"}, {kanji: "悄っそり", kana: "こっそり"}, {kanji: "疑う", kana: "うたがう"},
+        {kanji: "敬う", kana: "うやまう"}, {kanji: "羨む", kana: "うらやむ"}, {kanji: "悩む", kana: "なやむ"},
+        {kanji: "失望", kana: "しつぼう"}, {kanji: "羨ましい", kana: "うらやましい"}, {kanji: "気の毒", kana: "きのどく"},
+        {kanji: "謝る", kana: "あやまる"}, {kanji: "慰める", kana: "なぐさめる"}, {kanji: "罵る", kana: "ののしる"},
+        {kanji: "貶す", kana: "けなす"}, {kanji: "避ける", kana: "さける"}, {kanji: "逃げる", kana: "にげる"},
+        {kanji: "忠告", kana: "ちゅうこく"}, {kanji: "助言", kana: "じょげん"}, {kanji: "言いつける", kana: "いいつける"},
+        {kanji: "自慢", kana: "じまん"}, {kanji: "隠す", kana: "かくす"}, {kanji: "秘密", kana: "ひみつ"},
+        {kanji: "仲直り", kana: "なかなおり"}, {kanji: "作法", kana: "さほう"}, {kanji: "見っともない", kana: "みっともない"},
+        {kanji: "失恋", kana: "しつれん"}, {kanji: "余計", kana: "よけい"}, {kanji: "大した", kana: "たいした"},
+        {kanji: "破片", kana: "はへん"}, {kanji: "切っ掛け", kana: "きっかけ"}, {kanji: "契機", kana: "けいき"},
+        {kanji: "常に", kana: "つねに"}, {kanji: "叩く", kana: "たたく"}, {kanji: "夫々", kana: "それぞれ"},
+        {kanji: "比較", kana: "ひかく"}, {kanji: "占める", kana: "しめる"}, {kanji: "序に", kana: "ついでに"},
+        {kanji: "逆さに", kana: "さかさに"}, {kanji: "中ても", kana: "なかでも"}, {kanji: "既に", kana: "すでに"},
+        {kanji: "何とか", kana: "なんとか"}, {kanji: "たった", kana: "たった"}, {kanji: "次第に", kana: "しだいに"},
+        {kanji: "滅多に", kana: "めったに"}, {kanji: "必死に", kana: "ひっしに"}, {kanji: "一先ず", kana: "ひとまず"},
+        {kanji: "頻りに", kana: "しきりに"}, {kanji: "態と", kana: "わざと"}, {kanji: "近々", kana: "ちかじか"},
+        {kanji: "案外", kana: "あんがい"}, {kanji: "案の定", kana: "あんのじょう"}, {kanji: "自ら", kana: "みずから"},
+        {kanji: "凝っくり", kana: "じっくり"}, {kanji: "一瞬", kana: "いっしゅん"}, {kanji: "若干", kana: "じゃっかん"},
+        {kanji: "今や", kana: "いまや"}, {kanji: "欠かせない", kana: "かかせない"}, {kanji: "欠品", kana: "けっぴん"},
+        {kanji: "せっせと", kana: "せっせと"}, {kanji: "必ずしも", kana: "かならずしも"}, {kanji: "若しも", kana: "もしも"},
+        {kanji: "早速", kana: "さっそく"}, {kanji: "余程", kana: "よほど"}, {kanji: "寧ろ", kana: "むしろ"},
+        {kanji: "万が一", kana: "まんがいち"}, {kanji: "当分", kana: "とうぶん"}, {kanji: "今一", kana: "いまいち"},
+        {kanji: "折角", kana: "せっかく"}, {kanji: "或いは", kana: "あるいは"}, {kanji: "そもそも", kana: "そもそも"},
+        {kanji: "見込み", kana: "みこみ"}, {kanji: "僅か", kana: "わずか"}, {kanji: "実に", kana: "じつに"},
+        {kanji: "実は", kana: "じつは"}, {kanji: "正に", kana: "まさに"}, {kanji: "一応", kana: "いちおう"},
+        {kanji: "忽ち", kana: "たちまち"}, {kanji: "今に", kana: "いまに"}, {kanji: "該当", kana: "がいとう"},
+        {kanji: "片方", kana: "かたほう"}, {kanji: "片思い", kana: "かたおもい"}, {kanji: "打ち合わせ", kana: "うちあわせ"},
+        {kanji: "団体", kana: "だんたい"}, {kanji: "個人", kana: "こじん"}, {kanji: "日帰り", kana: "ひがえり"},
+        {kanji: "二泊三日", kana: "にはくみっか"}, {kanji: "別荘", kana: "べっそう"}, {kanji: "通う", kana: "かよう"},
+        {kanji: "通る", kana: "とおる"}, {kanji: "通す", kana: "とおす"}, {kanji: "見送る", kana: "みおくる"},
+        {kanji: "出迎える", kana: "でむかえる"}, {kanji: "送迎", kana: "そうげい"}, {kanji: "名所", kana: "めいしょ"},
+        {kanji: "巡る", kana: "めぐる"}, {kanji: "活気", kana: "かっき"}, {kanji: "大通り", kana: "おおどおり"},
+        {kanji: "川沿い", kana: "かわぞい"}, {kanji: "停留所", kana: "ていりゅうじょ"}, {kanji: "迷う", kana: "まよう"},
+        {kanji: "売店", kana: "ばいてん"}, {kanji: "横断", kana: "おうだん"}, {kanji: "縦断", kana: "じゅうだん"},
+        {kanji: "発つ", kana: "たつ"}, {kanji: "着く", kana: "つく"}, {kanji: "到着", kana: "とうちゃく"},
+        {kanji: "飛行機", kana: "ひこうき"}, {kanji: "行方", kana: "ゆくえ"}, {kanji: "回数券", kana: "かいすうけん"},
+        {kanji: "定員", kana: "ていいん"}, {kanji: "地形", kana: "ちけい"}, {kanji: "列島", kana: "れっとう"},
+        {kanji: "南北", kana: "なんぼく"}, {kanji: "南北東西", kana: "なんぼくとうざい"}, {kanji: "半島", kana: "はんとう"},
+        {kanji: "岬", kana: "みさき"}, {kanji: "なだらか", kana: "なだらか"}, {kanji: "頂上", kana: "ちょうじょう"},
+        {kanji: "麓", kana: "ふもと"}, {kanji: "山腹", kana: "さんぷく"}, {kanji: "囲まれた", kana: "かこまれた"},
+        {kanji: "盆地", kana: "ぼんち"}, {kanji: "平野", kana: "へいや"}, {kanji: "湧く", kana: "わく"},
+        {kanji: "薄暗い", kana: "うすぐらい"}, {kanji: "地盤", kana: "じばん"}, {kanji: "砂漠", kana: "さばく"},
+        {kanji: "岸", kana: "きし"}, {kanji: "沖", kana: "おき"}, {kanji: "近づく", kana: "ちかづく"},
+        {kanji: "嵐", kana: "あらし"}, {kanji: "巻き込む", kana: "まきこむ"}, {kanji: "霧", kana: "きり"},
+        {kanji: "気候", kana: "きこう"}, {kanji: "夕立", kana: "ゆうだち"}, {kanji: "風景", kana: "ふうけい"},
+        {kanji: "眺める", kana: "ながめる"}, {kanji: "眺め", kana: "ながめ"}, {kanji: "見上げる", kana: "みあげる"},
+        {kanji: "見下ろす", kana: "みおろす"}, {kanji: "地平線", kana: "ちへいせん"}, {kanji: "夕日", kana: "ゆうひ"},
+        {kanji: "暮れる", kana: "くれる"}, {kanji: "暮れ", kana: "くれ"}, {kanji: "新学期", kana: "しんがっき"},
+        {kanji: "上旬", kana: "じょうじゅん"}, {kanji: "中旬", kana: "ちゅうじゅん"}, {kanji: "下旬", kana: "げじゅん"},
+        {kanji: "梅雨が明ける", kana: "つゆがあける"}, {kanji: "夜明け", kana: "よあけ"}, {kanji: "湿度", kana: "しつど"},
+        {kanji: "蒸し暑い", kana: "むしあつい"}, {kanji: "汗を掻く", kana: "あせをかく"}, {kanji: "果実", kana: "かじつ"},
+        {kanji: "実る", kana: "みのる"}, {kanji: "実", kana: "み"}, {kanji: "稲", kana: "いね"},
+        {kanji: "尖る", kana: "とがる"}, {kanji: "好天", kana: "こうてん"}, {kanji: "激しい", kana: "はげしい"},
+        {kanji: "霜", kana: "しも"}, {kanji: "吹雪", kana: "ふぶき"}, {kanji: "凍える", kana: "こごえる"},
+        {kanji: "持ち上げる", kana: "もちあげる"}, {kanji: "取り上げる", kana: "とりあげる"}, {kanji: "真っ赤", kana: "まっか"},
+        {kanji: "真っ白", kana: "まっしろ"}, {kanji: "真っ暗", kana: "まっくら"}, {kanji: "真っ青", kana: "まっさお"},
+        {kanji: "惚んやり", kana: "ぼんやり"}, {kanji: "遥かに", kana: "はるかに"}, {kanji: "一段と", kana: "いちだんと"},
+        {kanji: "決まって", kana: "きまって"}, {kanji: "児童", kana: "じどう"}, {kanji: "幼児", kana: "ようじ"},
+        {kanji: "進学", kana: "しんがく"}, {kanji: "転校", kana: "てんこう"}, {kanji: "在学中", kana: "ざいがくちゅう"},
+        {kanji: "院生", kana: "いんせい"}, {kanji: "ゼミ", kana: "ぜみ"}, {kanji: "演習", kana: "えんしゅう"},
+        {kanji: "単位", kana: "たんい"}, {kanji: "休講", kana: "きゅうこう"}, {kanji: "自習", kana: "じしゅう"},
+        {kanji: "学期", kana: "がっき"}, {kanji: "時間割", kana: "じかんわり"}, {kanji: "講義", kana: "こうぎ"},
+        {kanji: "科目", kana: "かもく"}, {kanji: "講師", kana: "こうし"}, {kanji: "実習", kana: "じっしゅう"},
+        {kanji: "採点", kana: "さいてん"}, {kanji: "期末", kana: "きまつ"}, {kanji: "中間試験", kana: "ちゅうかんしけん"},
+        {kanji: "筆記", kana: "ひっき"}, {kanji: "問い", kana: "とい"}, {kanji: "教科書", kana: "きょうかしょ"},
+        {kanji: "成績", kana: "せいせき"}, {kanji: "評価", kana: "ひょうか"}, {kanji: "優れる", kana: "すぐれる"},
+        {kanji: "劣る", kana: "おとる"}, {kanji: "学問", kana: "がくもん"}, {kanji: "物理", kana: "ぶつり"},
+        {kanji: "化学", kana: "かがく"}, {kanji: "生物学", kana: "せいぶつがく"}, {kanji: "経済学", kana: "けいざいがく"},
+        {kanji: "人文", kana: "じんぶん"}, {kanji: "哲学", kana: "てつがく"}, {kanji: "専攻", kana: "せんこう"},
+        {kanji: "研究", kana: "けんきゅう"}, {kanji: "妥当", kana: "だとう"}, {kanji: "実験", kana: "じっけん"},
+        {kanji: "証明", kana: "しょうめい"}, {kanji: "学会", kana: "がっかい"}, {kanji: "認める", kana: "みとめる"},
+        {kanji: "就職", kana: "しゅうしょく"}, {kanji: "研修", kana: "けんしゅう"}, {kanji: "一流", kana: "いちりゅう"},
+        {kanji: "月給", kana: "げっきゅう"}, {kanji: "怠ける", kana: "なまける"}, {kanji: "怠け者", kana: "なまけもの"},
+        {kanji: "熱中", kana: "ねっちゅう"}, {kanji: "休暇", kana: "きゅうか"}, {kanji: "申請", kana: "しんせい"},
+        {kanji: "思いつく", kana: "おもいつく"}, {kanji: "提案", kana: "ていあん"}, {kanji: "慌ただしい", kana: "あわただしい"},
+        {kanji: "能率", kana: "のうりつ"}, {kanji: "失業", kana: "しつぎょう"}, {kanji: "稼ぐ", kana: "かせぐ"},
+        {kanji: "儲ける", kana: "もうける"}, {kanji: "儲かる", kana: "もうかる"}, {kanji: "稼働", kana: "かどう"},
+        {kanji: "破産", kana: "はさん"}, {kanji: "潰れる", kana: "つぶれる"}, {kanji: "経営", kana: "けいえい"},
+        {kanji: "進出", kana: "しんしゅつ"}, {kanji: "資本金", kana: "しほんきん"}, {kanji: "募集", kana: "ぼしゅう"},
+        {kanji: "重役", kana: "じゅうやく"}, {kanji: "指示", kana: "しじ"}, {kanji: "才能", kana: "さいのう"},
+        {kanji: "労働", kana: "ろうどう"}, {kanji: "組合", kana: "くみあい"}, {kanji: "条件", kana: "じょうけん"},
+        {kanji: "改善", kana: "かいぜん"}, {kanji: "要求", kana: "ようきゅう"}, {kanji: "利害", kana: "りがい"},
+        {kanji: "利益", kana: "りえき"}, {kanji: "弁護士", kana: "べんごし"}, {kanji: "金融", kana: "きんゆう"},
+        {kanji: "一流校", kana: "いちりゅうこう"}, {kanji: "引き出す", kana: "ひきだす"}, {kanji: "引き受ける", kana: "ひきうける"},
+        {kanji: "専門職", kana: "せんもんしょく"}, {kanji: "技術職", kana: "ぎじゅつしょく"}, {kanji: "報道", kana: "ほうどう"},
+        {kanji: "報道陣", kana: "ほうどうじん"}, {kanji: "広告", kana: "こうこく"}, {kanji: "朝刊", kana: "ちょうかん"},
+        {kanji: "夕刊", kana: "ゆうかん"}, {kanji: "取材", kana: "しゅざい"}, {kanji: "入手", kana: "にゅうしゅ"},
+        {kanji: "発行", kana: "はっこう"}, {kanji: "世間", kana: "せけん"}, {kanji: "話題", kana: "わだい"},
+        {kanji: "注目", kana: "ちゅうもく"}, {kanji: "見出し", kana: "みだし"}, {kanji: "一面", kana: "いちめん"},
+        {kanji: "総合欄", kana: "そうごうらん"}, {kanji: "国際欄", kana: "こくさいらん"}, {kanji: "内容", kana: "ないよう"},
+        {kanji: "主な", kana: "おもな"}, {kanji: "適切な", kana: "てきせつな"}, {kanji: "興味深い", kana: "きょうみぶかい"},
+        {kanji: "詳細", kana: "しょうさい"}, {kanji: "大まか", kana: "おおまか"}, {kanji: "正確", kana: "せいかくな"},
+        {kanji: "出鱈目", kana: "でたらめ"}, {kanji: "衝撃的", kana: "しょうげきてき"}, {kanji: "番組", kana: "ばんぐみ"},
+        {kanji: "放送", kana: "ほうそう"}, {kanji: "再放送", kana: "さいほうそう"}, {kanji: "制作", kana: "せいさく"},
+        {kanji: "宣伝", kana: "せんでん"}, {kanji: "映像", kana: "えいぞう"}, {kanji: "音声", kana: "おんせい"},
+        {kanji: "著名人", kana: "ちょめいじん"}, {kanji: "旅", kana: "たび"}, {kanji: "娯楽", kana: "ごらく"},
+        {kanji: "退屈", kana: "たいくつ"}, {kanji: "詰らない", kana: "つまらない"}, {kanji: "下らない", kana: "くだらない"},
+        {kanji: "評判", kana: "ひょうばん"}, {kanji: "魅力", kana: "みりょく"}, {kanji: "訪問", kana: "ほうもん"},
+        {kanji: "削除", kana: "さくじょ"}, {kanji: "消去", kana: "しょうきょ"}, {kanji: "受信", kana: "じゅしん"},
+        {kanji: "送受信", kana: "そうじゅしん"}, {kanji: "添付", kana: "てんぷ"}, {kanji: "種類", kana: "しゅるい"},
+        {kanji: "通信機能", kana: "つうしんきのう"}, {kanji: "設定", kana: "せってい"}, {kanji: "挿入", kana: "そうにゅう"},
+        {kanji: "拡大", kana: "かくだい"}, {kanji: "縮小", kana: "しゅくしょう"}, {kanji: "保存", kana: "ほぞん"},
+        {kanji: "接続", kana: "せつぞく"}, {kanji: "検索", kana: "けんさく"}, {kanji: "公式", kana: "こうしき"},
+        {kanji: "起動", kana: "きどう"}, {kanji: "立ち上げる", kana: "たちあげる"}, {kanji: "立ち上がる", kana: "たちあがる"},
+        {kanji: "盛り上げる", kana: "もりあげる"}, {kanji: "終了", kana: "しゅうりょう"}, {kanji: "共有", kana: "きょうゆう"},
+        {kanji: "湖", kana: "みずうみ"}, {kanji: "砂", kana: "すな"}, {kanji: "泥", kana: "どろ"},
+        {kanji: "滝", kana: "たき"}, {kanji: "虹", kana: "にじ"}, {kanji: "昨夜", kana: "さくや"},
+        {kanji: "日差し", kana: "ひざし"}, {kanji: "雇う", kana: "やとう"}, {kanji: "雇われる", kana: "やとわれる"},
+        {kanji: "当てはまる", kana: "あてはまる"}, {kanji: "張り切る", kana: "はりきる"}, {kanji: "追いかける", kana: "おいかける"},
+        {kanji: "就任", kana: "しゅうにん"}, {kanji: "勤める", kana: "つとめる"}, {kanji: "損害", kana: "そんがい"},
+        {kanji: "組織", kana: "そしき"}, {kanji: "競技", kana: "きょうぎ"}, {kanji: "出場", kana: "しゅつじょう"},
+        {kanji: "面倒", kana: "めんどう"}, {kanji: "幼稚園", kana: "ようちえん"}, {kanji: "筆記試験", kana: "ひっきしけん"},
+        {kanji: "教授", kana: "きょうじゅ"}, {kanji: "受け持つ", kana: "うけもつ"}, {kanji: "担当", kana: "たんとう"},
+        {kanji: "国立", kana: "こくりつ"}, {kanji: "私立", kana: "しりつ"}, {kanji: "参考文献", kana: "さんこうぶんけん"},
+        {kanji: "応募", kana: "おうぼ"}, {kanji: "手当", kana: "てあて"}, {kanji: "活躍", kana: "かつやく"},
+        {kanji: "従う", kana: "したがう"}, {kanji: "選手", kana: "せんしゅ"}, {kanji: "攻める", kana: "せめる"},
+        {kanji: "勝負", kana: "しょうぶ"}, {kanji: "勝敗", kana: "しょうはい"}, {kanji: "敗れる", kana: "やぶれる"},
+        {kanji: "引き分け", kana: "ひきわけ"}, {kanji: "読書", kana: "どくしょ"}, {kanji: "著者", kana: "ちょしゃ"},
+        {kanji: "書籍", kana: "しょせき"}, {kanji: "目次", kana: "もくじ"}, {kanji: "索引", kana: "さくいん"},
+        {kanji: "評論", kana: "ひょうろん"}, {kanji: "執筆", kana: "しっぴつ"}, {kanji: "古典", kana: "こてん"},
+        {kanji: "訳す", kana: "やくす"}, {kanji: "小説", kana: "しょうせつ"}, {kanji: "傑作", kana: "けっさく"},
+        {kanji: "名場面", kana: "めいばめん"}, {kanji: "随筆", kana: "ずいひつ"}, {kanji: "見つかる", kana: "みつかる"},
+        {kanji: "粗筋", kana: "あらすじ"}, {kanji: "演劇", kana: "えんげき"}, {kanji: "劇場", kana: "げきじょう"},
+        {kanji: "芝居", kana: "しばい"}, {kanji: "演技", kana: "えんぎ"}, {kanji: "主役", kana: "しゅやく"},
+        {kanji: "脇役", kana: "わきやく"}, {kanji: "舞台", kana: "ぶたい"}, {kanji: "幕", kana: "まく"},
+        {kanji: "台詞", kana: "せりふ"}, {kanji: "演奏", kana: "えんそう"}, {kanji: "裁縫", kana: "さいほう"},
+        {kanji: "工芸", kana: "こうげい"}, {kanji: "綿", kana: "わた"}, {kanji: "詰める", kana: "つめる"},
+        {kanji: "削る", kana: "けずる"}, {kanji: "彫る", kana: "ほる"}
     ];
 
     let quizQueue = [];
@@ -1116,13 +754,13 @@
             // 2. 長音地獄
             else if (strategy === 1) {
                 if (fake.includes('う')) fake = fake.replace('う', ''); // 移除長音
-                else if (fake.match(/[おこぞとどのもろよ]/)) fake += 'う';
-                else if (fake.match(/[えけせてねめれ]/)) fake += 'い';
-                else if (fake.match(/[あかさたなはまやらわ]/)) fake += 'あ';
+                else if (fake.match(/[おこぞとどのもろよ]/)) fake += 'う'; // 添加o段長音
+                else if (fake.match(/[えけせてねめれ]/)) fake += 'い'; // 添加e段長音
+                else if (fake.match(/[あかさたなはまやらわ]/)) fake += 'あ'; // 添加a段長音
             }
             // 3. 促音陷阱
             else if (strategy === 2) {
-                if (fake.includes('っ')) fake = fake.replace('っ', 'つ');
+                if (fake.includes('っ')) fake = fake.replace('っ', 'つ'); // 移除促音
                 else if (fake.includes('っ') === false && fake.length > 2) {
                     const pos = 1; 
                     fake = fake.slice(0, pos) + 'っ' + fake.slice(pos);
@@ -1163,6 +801,7 @@
                  else if (fake.includes('え')) fake = fake.replace('え', 'い');
             }
 
+            // 確保干擾項不等於正確答案
             if (fake !== correctKana && fake.length >= 1 && fake !== 'undefined') {
                 distractors.add(fake);
             }
@@ -1261,15 +900,18 @@
         allBtns.forEach(b => b.disabled = true);
 
         if (selected === q.correct) {
+            // 答對邏輯
             btn.classList.add('correct');
             document.getElementById('feedback-msg').style.color = '#4ade80';
             document.getElementById('feedback-msg').innerText = '正解！ ⭕';
             
             setTimeout(() => {
+                // 核心邏輯：答對則永久移除 (shift)
                 quizQueue.shift();
                 renderQuestion();
             }, 800);
         } else {
+            // 答錯邏輯
             btn.classList.add('wrong');
             wrongCount++;
             
@@ -1280,7 +922,9 @@
             document.getElementById('feedback-msg').style.color = '#ef4444';
             document.getElementById('feedback-msg').innerText = `錯誤！ (${q.text} = ${q.correct})`;
 
+            // 核心邏輯：答錯則重新排入隊列 (shift then push)
             const retryQ = quizQueue.shift();
+            // 選項重新洗牌，避免背位置
             retryQ.options = shuffle(retryQ.options);
             quizQueue.push(retryQ);
 
